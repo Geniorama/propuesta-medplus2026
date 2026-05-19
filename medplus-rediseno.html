@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rediseño Web Medplus x Geniorama</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="gate.css">
+    <script src="gate.js" defer></script>
+    <style>
+        /* CONFIGURACIÓN CORPORATIVA GENIORAMA */
+        :root {
+            --genio-blue: #000A3D;
+            --genio-pink: #FE1483;
+            --bg-dark: #00041a;
+            --bg-card: rgba(0, 10, 61, 0.7);
+            --neon-cyan: #00e5ff;
+            --neon-purple: #a855f7;
+            --text-main: #ffffff;
+            --text-dim: #cbd5e1;
+            --font-h: 'Oswald', sans-serif;
+            --font-b: 'Outfit', sans-serif;
+            /* Colores identitarios por Opción */
+            --op1: var(--neon-cyan);
+            --op2: var(--neon-purple);
+            --op3: var(--genio-pink);
+        }
+
+        * { box-sizing: border-box; -webkit-print-color-adjust: exact; }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            font-family: var(--font-b);
+            color: var(--text-main);
+        }
+
+        /* ESTRUCTURA DE DIAPOSITIVA EXPORTABLE (16:9) */
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: var(--bg-dark);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 70px;
+            margin: 0 auto;
+            page-break-after: always;
+            border-bottom: 1px solid #111;
+        }
+
+        /* FONDO CYBERPUNK GENIORAMA */
+        .slide-container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background:
+                linear-gradient(90deg, rgba(254, 20, 131, 0.05) 1px, transparent 1px),
+                linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 0;
+        }
+
+        .slide-container::after {
+            content: '';
+            position: absolute;
+            bottom: -150px;
+            right: -150px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(254, 20, 131, 0.15) 0%, transparent 70%);
+            z-index: 0;
+            filter: blur(50px);
+        }
+
+        .slide-container > * { position: relative; z-index: 2; }
+
+        /* TIPOGRAFÍA Y TÍTULOS */
+        h1, h2, h3 { font-family: var(--font-h); text-transform: uppercase; margin: 0; letter-spacing: 2px; }
+
+        h1 { font-size: 78px; color: #fff; line-height: 0.95; text-shadow: 0 0 20px var(--genio-pink); }
+
+        .slide-title {
+            font-size: 44px;
+            color: #fff;
+            margin-bottom: 50px;
+            border-left: 10px solid var(--genio-pink);
+            padding-left: 25px;
+        }
+
+        p, li { font-size: 21px; line-height: 1.55; color: var(--text-dim); }
+
+        .content-area { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; }
+
+        /* COMPONENTES */
+        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: stretch; }
+        .three-column { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; align-items: stretch; }
+        .four-column { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; align-items: stretch; }
+
+        .tile {
+            background: var(--bg-card);
+            border: 1px solid rgba(254, 20, 131, 0.2);
+            padding: 35px;
+            border-radius: 4px;
+            position: relative;
+            backdrop-filter: blur(10px);
+            height: 100%;
+        }
+        .tile::before { content: ''; position: absolute; top: 0; left: 0; width: 5px; height: 100%; background: var(--genio-pink); }
+        .tile h3 { font-size: 28px; color: var(--neon-cyan); margin-bottom: 15px; }
+        .tile.cyan { border-color: rgba(0, 229, 255, 0.3); }
+        .tile.cyan::before { background: var(--neon-cyan); }
+        .tile.featured { border: 2px solid var(--genio-pink); box-shadow: 0 0 30px rgba(254, 20, 131, 0.25); }
+
+        .tile-icon { font-size: 40px; color: var(--genio-pink); display: block; margin-bottom: 18px; }
+        .tile.cyan .tile-icon { color: var(--neon-cyan); }
+
+        .badge { background: var(--genio-pink); color: white; padding: 6px 20px; font-family: var(--font-h); font-size: 16px; text-transform: uppercase; display: inline-block; margin-bottom: 18px; letter-spacing: 2px; }
+        .badge.cyan { background: var(--neon-cyan); color: var(--bg-dark); }
+
+        /* TABLAS */
+        table { width: 100%; border-collapse: collapse; background: rgba(0, 10, 61, 0.6); }
+        th { background: var(--genio-pink); color: #fff; padding: 14px 18px; text-align: left; font-family: var(--font-h); font-size: 18px; letter-spacing: 1.5px; }
+        td { padding: 11px 18px; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 15px; color: var(--text-dim); }
+        td strong.row-label { color: #6a7cff; font-family: var(--font-h); letter-spacing: 1px; font-size: 15px; font-weight: 400; }
+
+        /* SISTEMA DE OPCIONES — color identitario por tier */
+        .opt-1 .tile, .tile.opt-1 { border-color: rgba(0, 229, 255, 0.35); }
+        .opt-1 .tile::before, .tile.opt-1::before { background: var(--op1); }
+        .opt-1 .tile h3, .tile.opt-1 h3 { color: var(--op1); }
+
+        .opt-2 .tile, .tile.opt-2 { border-color: rgba(168, 85, 247, 0.4); }
+        .opt-2 .tile::before, .tile.opt-2::before { background: var(--op2); }
+        .opt-2 .tile h3, .tile.opt-2 h3 { color: var(--op2); }
+
+        .opt-3 .tile, .tile.opt-3 { border-color: rgba(254, 20, 131, 0.45); }
+        .opt-3 .tile::before, .tile.opt-3::before { background: var(--op3); }
+        .opt-3 .tile h3, .tile.opt-3 h3 { color: var(--op3); }
+        .tile.opt-3.featured-hard {
+            border: 2px solid var(--op3);
+            box-shadow: 0 0 40px rgba(254, 20, 131, 0.35), inset 0 0 30px rgba(254, 20, 131, 0.06);
+        }
+
+        /* Numeración prominente en slides de Opción */
+        .opt-header {
+            display: flex;
+            align-items: baseline;
+            gap: 28px;
+            margin-bottom: 28px;
+            border-left: 10px solid var(--option-color, var(--genio-pink));
+            padding-left: 25px;
+        }
+        .opt-header .opt-number {
+            font-family: var(--font-h);
+            font-size: 120px;
+            line-height: 0.85;
+            color: var(--option-color, var(--genio-pink));
+            text-shadow: 0 0 25px var(--option-color, var(--genio-pink));
+            font-weight: 700;
+            letter-spacing: -2px;
+        }
+        .opt-header .opt-titles { display: flex; flex-direction: column; gap: 4px; padding-bottom: 6px; }
+        .opt-header .opt-tag {
+            font-family: var(--font-h);
+            font-size: 13px;
+            letter-spacing: 4px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+        }
+        .opt-header .opt-name {
+            font-family: var(--font-h);
+            font-size: 38px;
+            color: #fff;
+            line-height: 1;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .opt-header .opt-name .accent { color: var(--option-color, var(--genio-pink)); }
+
+        /* Helpers de color por opción */
+        .c-op1 { color: var(--op1) !important; }
+        .c-op2 { color: var(--op2) !important; }
+        .c-op3 { color: var(--op3) !important; }
+
+        /* TABLA DE ALCANCE (Slide 7b) */
+        .scope-table th { padding: 12px 16px; font-size: 16px; }
+        .scope-table td { padding: 9px 16px; font-size: 15px; }
+        .scope-table tr.cat-row td {
+            background: rgba(0, 229, 255, 0.08);
+            color: var(--neon-cyan);
+            font-family: var(--font-h);
+            font-size: 13px;
+            letter-spacing: 3px;
+            text-align: center;
+            padding: 7px 16px;
+            border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+        }
+        .scope-table td.yes { text-align: center; color: var(--op1); font-size: 22px; font-weight: 700; }
+        .scope-table td.yes-purple { text-align: center; color: var(--op2); font-size: 22px; font-weight: 700; text-shadow: 0 0 8px rgba(168,85,247,0.5); }
+        .scope-table td.yes-pink { text-align: center; color: var(--op3); font-size: 22px; font-weight: 700; text-shadow: 0 0 8px rgba(254,20,131,0.5); }
+        .scope-table td.no { text-align: center; color: rgba(255,255,255,0.25); font-size: 22px; }
+        .scope-table td.info { text-align: center; color: var(--op1); font-family: var(--font-h); font-size: 13px; letter-spacing: 1px; }
+        .scope-table td.info-purple { text-align: center; color: var(--op2); font-family: var(--font-h); font-size: 13px; letter-spacing: 1px; font-weight: 700; }
+        .scope-table td.info-pink { text-align: center; color: var(--op3); font-family: var(--font-h); font-size: 13px; letter-spacing: 1px; font-weight: 700; }
+
+        /* Cabeceras de columna por opción (Slides 7 y 7b) */
+        th.col-op1 { background: rgba(0, 229, 255, 0.85); color: var(--bg-dark); }
+        th.col-op2 { background: rgba(168, 85, 247, 0.85); color: #fff; }
+        th.col-op3 { background: var(--op3); color: #fff; }
+
+        /* MIGRACIÓN STEPS */
+        .migration-steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            margin-top: 20px;
+            position: relative;
+        }
+        .migration-steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 12%;
+            right: 12%;
+            height: 2px;
+            background: var(--genio-pink);
+            box-shadow: 0 0 10px var(--genio-pink);
+        }
+        .mstep {
+            text-align: center;
+            position: relative;
+            padding: 0 12px;
+        }
+        .mstep .dot {
+            width: 14px;
+            height: 14px;
+            background: var(--neon-cyan);
+            border: 3px solid var(--bg-dark);
+            border-radius: 50%;
+            margin: 12px auto 18px;
+            box-shadow: 0 0 12px var(--neon-cyan);
+            position: relative;
+            z-index: 2;
+        }
+        .mstep h3 {
+            color: var(--neon-cyan);
+            font-size: 22px;
+            margin-bottom: 14px;
+        }
+        .mstep p { font-size: 16px; margin: 0; }
+
+        /* LOGO TILES (suite de datos) */
+        .logo-tile {
+            background: rgba(0, 4, 26, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 130px;
+            font-family: var(--font-h);
+            font-size: 22px;
+            letter-spacing: 1px;
+            color: #fff;
+            text-align: center;
+            line-height: 1.2;
+        }
+        .logo-tile i { font-size: 32px; margin-right: 14px; }
+
+        /* PRICE BLOCKS */
+        .price-block {
+            text-align: center;
+            padding: 30px 20px;
+        }
+        .price-block .price-label {
+            font-family: var(--font-b);
+            font-size: 26px;
+            color: #fff;
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+        .price-block .price-value {
+            font-family: var(--font-h);
+            font-size: 64px;
+            color: var(--genio-pink);
+            line-height: 1;
+            text-shadow: 0 0 20px rgba(254, 20, 131, 0.4);
+            font-weight: 700;
+        }
+        .price-block .price-unit {
+            font-family: var(--font-b);
+            font-size: 22px;
+            color: var(--text-dim);
+            margin-left: 6px;
+            font-weight: 400;
+        }
+
+        .bullet-list ul { list-style: none; padding: 0; margin: 0; }
+        .bullet-list li { margin-bottom: 12px; padding-left: 30px; position: relative; font-size: 18px; }
+        .bullet-list li::before { content: '•'; position: absolute; left: 8px; color: var(--neon-cyan); font-size: 24px; top: -4px; }
+
+        /* BARRA DE NAVEGACIÓN ENTRE PROPUESTAS (solo pantalla) */
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(0, 4, 26, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(254, 20, 131, 0.3);
+            padding: 14px 30px;
+            display: flex;
+            gap: 28px;
+            align-items: center;
+            font-family: var(--font-h);
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 2px;
+            flex-wrap: wrap;
+        }
+        .nav-bar a {
+            color: var(--text-dim);
+            text-decoration: none;
+            padding: 6px 14px;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .nav-bar a:hover { color: #fff; border-color: var(--neon-cyan); }
+        .nav-bar a.active { color: var(--genio-pink); border-color: var(--genio-pink); box-shadow: 0 0 10px rgba(254, 20, 131, 0.4); }
+        .nav-bar .nav-brand { color: var(--neon-cyan); margin-right: auto; font-weight: 700; }
+
+        /* SCROLL SNAP & ANIMATIONS — solo en pantalla */
+        @media screen {
+            html {
+                scroll-snap-type: y proximity;
+                scroll-behavior: smooth;
+            }
+            .slide-container {
+                scroll-snap-align: start;
+                scroll-snap-stop: always;
+                min-height: 100vh;
+            }
+            /* Estado inicial para animaciones GSAP (evita FOUC) */
+            .slide-container.gsap-ready > *:not(script) {
+                will-change: transform, opacity;
+            }
+        }
+
+        @media print {
+            body { background: none; }
+            .slide-container { margin: 0; border: none; box-shadow: none; min-height: auto; }
+            .nav-bar { display: none; }
+            html { scroll-snap-type: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Barra de navegación entre propuestas (oculta en impresión / PDF) -->
+    <nav class="nav-bar">
+        <span class="nav-brand">GENIORAMA × MEDPLUS</span>
+        <a href="index.html">Inicio</a>
+        <a href="medplus-rediseno.html" class="active">Rediseño Web</a>
+        <a href="medplus-soporte.html">Soporte y Gestión</a>
+    </nav>
+
+    <!-- Slide 1: Portada -->
+    <div class="slide-container" id="slide1">
+        <div class="content-area" style="text-align: center;">
+            <div style="font-family: var(--font-h); font-size: 22px; letter-spacing: 6px; color: var(--neon-cyan); margin-bottom: 30px;">
+                <span style="display:inline-block; width:14px; height:14px; background:var(--genio-pink); transform:rotate(45deg); margin-right:12px; vertical-align:middle;"></span>
+                GENIORAMA
+            </div>
+            <h1 style="font-size: 90px;">MEDPLUS <span style="color:var(--genio-pink)">X</span> GENIORAMA</h1>
+            <p style="font-family: var(--font-b); font-size: 30px; color: var(--neon-cyan); margin-top: 30px; font-weight: 300;">Rediseño &amp; Ingeniería de Alto Impacto</p>
+            <div style="height: 4px; width: 320px; background: var(--genio-pink); margin: 50px auto 0; box-shadow: 0 0 15px var(--genio-pink);"></div>
+        </div>
+    </div>
+
+    <!-- Slide 2: Visión de Transformación -->
+    <div class="slide-container" id="slide2">
+        <div class="content-area" style="text-align: center;">
+            <h1 style="font-size: 78px;">VISIÓN DE <span style="color:var(--genio-pink)">TRANSFORMACIÓN</span></h1>
+            <p style="font-size: 26px; max-width: 900px; margin: 50px auto 0; line-height: 1.6;">
+                Migración hacia un entorno web <strong style="color:var(--neon-cyan); font-weight:600;">escalable, seguro y optimizado</strong> para la captación masiva de afiliados en Colombia.
+            </p>
+        </div>
+    </div>
+
+    <!-- Slide 3: Opción 01 - CMS Ágil -->
+    <div class="slide-container opt-1" id="slide3" style="--option-color: var(--op1);">
+        <div class="opt-header">
+            <span class="opt-number">01</span>
+            <div class="opt-titles">
+                <span class="opt-tag">Opción 01 · Entrada</span>
+                <span class="opt-name">CMS <span class="accent">Ágil</span> &amp; Optimizado</span>
+            </div>
+        </div>
+        <div class="content-area">
+            <div class="three-column" style="margin-bottom: 22px;">
+                <div class="tile" style="padding: 20px;">
+                    <i class="fa-brands fa-wordpress tile-icon" style="font-size: 30px; margin-bottom: 10px; color: var(--op1);"></i>
+                    <h3 style="font-size: 20px;">WordPress Custom</h3>
+                    <p style="font-size:14px;">Arquitectura <strong style="color:#fff;">Geniorama Engine</strong>. Autonomía total en contenidos.</p>
+                </div>
+                <div class="tile" style="padding: 20px;">
+                    <i class="fa-solid fa-cloud-arrow-up tile-icon" style="font-size: 30px; margin-bottom: 10px; color: var(--op1);"></i>
+                    <h3 style="font-size: 20px;">Cloudflare R2</h3>
+                    <p style="font-size:14px;">Imágenes y PDFs servidos desde el borde para descarga ultrarrápida.</p>
+                </div>
+                <div class="tile" style="padding: 20px;">
+                    <i class="fa-solid fa-server tile-icon" style="font-size: 30px; margin-bottom: 10px; color: var(--op1);"></i>
+                    <h3 style="font-size: 20px;">Hosting Premium</h3>
+                    <p style="font-size:14px;">VPS optimizado con caché a nivel servidor <strong style="color:#fff;">LSCache</strong>.</p>
+                </div>
+            </div>
+            <div class="tile" style="padding: 20px;">
+                <h3 style="font-size: 18px; color: #fff; margin-bottom: 10px;">Incluye en el proyecto</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px 30px;">
+                    <div style="font-size: 14px; color: var(--text-dim);"><i class="fa-solid fa-check" style="color:var(--op1); margin-right:8px;"></i>Sitio principal rediseñado (Home + páginas institucionales).</div>
+                    <div style="font-size: 14px; color: var(--text-dim);"><i class="fa-solid fa-check" style="color:var(--op1); margin-right:8px;"></i>Diseño UI/UX + maquetación responsiva avanzada.</div>
+                    <div style="font-size: 14px; color: var(--text-dim);"><i class="fa-solid fa-check" style="color:var(--op1); margin-right:8px;"></i>CMS WordPress autogestionable.</div>
+                    <div style="font-size: 14px; color: var(--text-dim);"><i class="fa-solid fa-check" style="color:var(--op1); margin-right:8px;"></i>Blog con filtros CMS.</div>
+                    <div style="font-size: 14px; color: var(--text-dim);"><i class="fa-solid fa-check" style="color:var(--op1); margin-right:8px;"></i>Suite de medición (GA4 + GTM + Search Console + Clarity).</div>
+                    <div style="font-size: 14px; color: var(--text-dim);"><i class="fa-solid fa-check" style="color:var(--op1); margin-right:8px;"></i>Bolsa de 20h para integraciones externas.</div>
+                    <div style="font-size: 14px; color: var(--text-dim);"><i class="fa-solid fa-check" style="color:var(--op1); margin-right:8px;"></i>Garantía 60 días post entrega.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: Opción 02 - Headless CMS -->
+    <div class="slide-container opt-2" id="slide4" style="--option-color: var(--op2);">
+        <div class="opt-header">
+            <span class="opt-number">02</span>
+            <div class="opt-titles">
+                <span class="opt-tag">Opción 02 · Intermedia</span>
+                <span class="opt-name"><span class="accent">Headless</span> CMS</span>
+            </div>
+        </div>
+        <div class="content-area">
+            <div class="two-column" style="margin-bottom: 18px;">
+                <div>
+                    <div class="badge" style="background: var(--op2);">Máximo Performance</div>
+                    <h3 style="font-size: 24px; color: #fff; margin-bottom: 12px;">Next.js + Strapi CMS<br>+ Cloudflare R2</h3>
+                    <p style="font-size: 14px; margin-bottom: 8px;">Velocidad disruptiva y seguridad de nivel bancario al desacoplar el frontend del panel de administración.</p>
+                    <p style="font-size: 14px;">Infraestructura elástica en <strong style="color:var(--op2);">AWS (EC2 + RDS Managed)</strong>.</p>
+                </div>
+                <div class="tile" style="display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding: 18px; border-color: rgba(168,85,247,0.4);">
+                    <i class="fa-solid fa-layer-group" style="font-size: 64px; color: var(--op2); margin-bottom: 12px; filter: drop-shadow(0 0 20px var(--op2));"></i>
+                    <h3 style="font-size: 18px; color: var(--op2);">Arquitectura Desacoplada</h3>
+                    <p style="font-size: 13px; margin-top: 6px;">Frontend independiente del backend.<br>Escalado automático. Cero downtime.</p>
+                </div>
+            </div>
+            <div class="tile" style="padding: 18px; border-color: rgba(168,85,247,0.45); position: relative;">
+                <span style="position: absolute; top: 0; left: 0; width: 5px; height: 100%; background: var(--op2);"></span>
+                <h3 style="font-size: 18px; color: var(--op2); margin-bottom: 10px;">Incluye en el proyecto</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3px 30px;">
+                    <div style="font-size: 13px; color: var(--text-dim);"><i class="fa-solid fa-check" style="color:var(--op2); margin-right:8px;"></i>Sitio principal en Next.js + Strapi (Home + institucional).</div>
+                    <div style="font-size: 13px; color: var(--text-dim);"><i class="fa-solid fa-check" style="color:var(--op2); margin-right:8px;"></i><strong style="color:#fff;">2 Landing Pages comerciales</strong> a elección.</div>
+                    <div style="font-size: 13px; color: var(--text-dim);"><i class="fa-solid fa-check" style="color:var(--op2); margin-right:8px;"></i><strong style="color:#fff;">Cotizador multi-paso básico</strong> con captura de lead.</div>
+                    <div style="font-size: 13px; color: var(--text-dim);"><i class="fa-solid fa-check" style="color:var(--op2); margin-right:8px;"></i><strong style="color:#fff;">Blog</strong> con filtros + <strong style="color:#fff;">FAQ estático</strong>.</div>
+                    <div style="font-size: 13px; color: var(--text-dim);"><i class="fa-solid fa-check" style="color:var(--op2); margin-right:8px;"></i><strong style="color:#fff;">1 módulo especial</strong> a elección (Labcore, Tarjeta Azul+PSE).</div>
+                    <div style="font-size: 13px; color: var(--text-dim);"><i class="fa-solid fa-check" style="color:var(--op2); margin-right:8px;"></i><strong style="color:#fff;">Botón flotante WhatsApp / Bot Celeste</strong>.</div>
+                    <div style="font-size: 13px; color: var(--text-dim);"><i class="fa-solid fa-check" style="color:var(--op2); margin-right:8px;"></i>CMS Strapi headless + AWS (EC2 + RDS) + Cloudflare R2.</div>
+                    <div style="font-size: 13px; color: var(--text-dim);"><i class="fa-solid fa-check" style="color:var(--op2); margin-right:8px;"></i>Suite de medición completa + headers OWASP base.</div>
+                    <div style="font-size: 13px; color: var(--text-dim);"><i class="fa-solid fa-check" style="color:var(--op2); margin-right:8px;"></i>Bolsa de <strong style="color:#fff;">40 horas</strong> para integraciones externas.</div>
+                    <div style="font-size: 13px; color: var(--text-dim);"><i class="fa-solid fa-check" style="color:var(--op2); margin-right:8px;"></i><strong style="color:#fff;">Garantía 3 meses</strong> post entrega.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Opción 03 - Enterprise Custom -->
+    <div class="slide-container opt-3" id="slide5" style="--option-color: var(--op3);">
+        <div class="opt-header">
+            <span class="opt-number">03</span>
+            <div class="opt-titles">
+                <span class="opt-tag" style="color: var(--op3);">Opción 03 · Premium · RFP Compliant</span>
+                <span class="opt-name"><span class="accent">Enterprise</span> Custom Suite</span>
+            </div>
+        </div>
+        <div class="content-area">
+            <div class="two-column">
+                <div>
+                    <div class="badge">100% RFP MedPlus 2026</div>
+                    <h3 style="font-size: 24px; color: #fff; margin-bottom: 14px;">Next.js + Node.js (Express)<br>+ AWS S3</h3>
+                    <p style="font-size: 15px; margin-bottom: 14px;">Software a medida que <strong style="color:var(--op3);">cumple integralmente el RFP MedPlus 2026</strong>: ecosistema completo con módulos transaccionales, integraciones críticas y blindaje post-incidente.</p>
+                    <div class="bullet-list">
+                        <ul>
+                            <li style="font-size: 15px;">Dashboard administrativo exclusivo (Control Center).</li>
+                            <li style="font-size: 15px;">5 LPs + Cotizador CRO + Directorio + 5 módulos especiales.</li>
+                            <li style="font-size: 15px;">8 integraciones críticas (CRM, PayU, Digitalk, APIs MedPlus).</li>
+                            <li style="font-size: 15px;">MFA + WCAG 2.1 AA + pentesting ético pre go-live.</li>
+                            <li style="font-size: 15px;">Garantía 6 meses + capacitación 8h + docs técnicas.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding: 10px;">
+                    <div style="position:relative; width: 280px; height: 280px;">
+                        <div style="position:absolute; inset:0; border:2px solid var(--op3); border-radius:50%; box-shadow: 0 0 40px var(--op3), inset 0 0 30px rgba(254,20,131,0.15);"></div>
+                        <div style="position:absolute; inset:25px; border:1px solid var(--op3); border-radius:50%; opacity: 0.55;"></div>
+                        <div style="position:absolute; inset:55px; border:1px dashed rgba(254,20,131,0.35); border-radius:50%;"></div>
+                        <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+                            <i class="fa-solid fa-crown" style="font-size: 70px; color: var(--op3); filter: drop-shadow(0 0 20px var(--op3)); margin-bottom: 6px;"></i>
+                            <i class="fa-solid fa-shield-halved" style="font-size: 36px; color: var(--op3); filter: drop-shadow(0 0 12px var(--op3));"></i>
+                            <div style="font-family: var(--font-h); font-size: 13px; letter-spacing: 3px; color: #fff; margin-top: 14px;">ENTERPRISE GRADE</div>
+                            <div style="font-family: var(--font-h); font-size: 11px; letter-spacing: 2px; color: var(--op3); margin-top: 4px;">RFP COMPLIANT</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6: Opción 03 · Control Center -->
+    <div class="slide-container opt-3" id="slide5b" style="--option-color: var(--op3);">
+        <div style="display: flex; align-items: center; gap: 18px; margin-bottom: 22px; border-left: 6px solid var(--op3); padding-left: 18px;">
+            <span style="font-family: var(--font-h); font-size: 13px; letter-spacing: 4px; color: var(--op3);">OPCIÓN 03 · DEEP DIVE 1/2</span>
+        </div>
+        <h2 class="slide-title" style="margin-bottom: 32px;">Medplus Control Center</h2>
+        <div class="content-area">
+            <div class="two-column">
+                <div style="display:flex; align-items:center; justify-content:center;">
+                    <div style="position:relative; width: 340px; height: 340px;">
+                        <div style="position:absolute; inset:0; border:2px solid var(--op3); border-radius:50%; box-shadow: 0 0 40px var(--op3), inset 0 0 30px rgba(254,20,131,0.12);"></div>
+                        <div style="position:absolute; inset:25px; border:1px solid var(--op3); border-radius:50%; opacity:0.55;"></div>
+                        <div style="position:absolute; inset:55px; border:1px dashed rgba(254,20,131,0.35); border-radius:50%;"></div>
+                        <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+                            <i class="fa-solid fa-gauge-high" style="font-size: 80px; color: var(--op3); filter: drop-shadow(0 0 20px var(--op3));"></i>
+                            <div style="font-family: var(--font-h); font-size: 13px; letter-spacing: 4px; color: #fff; margin-top: 18px;">CONTROL CENTER</div>
+                            <div style="font-family: var(--font-h); font-size: 11px; letter-spacing: 2px; color: var(--op3); margin-top: 4px;">EXCLUSIVO OP 03</div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 style="font-size: 30px; color: var(--op3); margin-bottom: 18px;">Inteligencia Centralizada</h3>
+                    <p style="font-size: 17px; margin-bottom: 18px;">Un panel administrativo diseñado <strong style="color:#fff;">desde cero</strong> para los flujos de MedPlus, no un genérico:</p>
+                    <div class="bullet-list">
+                        <ul>
+                            <li style="font-size: 16px;">Gestión granular de contenidos por sección y rol.</li>
+                            <li style="font-size: 16px;">Estadísticas de conversión en tiempo real (funnel del cotizador).</li>
+                            <li style="font-size: 16px;">Auditoría de cambios con logs de seguridad.</li>
+                            <li style="font-size: 16px;">Control de usuarios por niveles de permiso.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7: Opción 03 · Alcance Completo -->
+    <div class="slide-container opt-3" id="slide5c" style="--option-color: var(--op3);">
+        <div style="display: flex; align-items: center; gap: 18px; margin-bottom: 22px; border-left: 6px solid var(--op3); padding-left: 18px;">
+            <span style="font-family: var(--font-h); font-size: 13px; letter-spacing: 4px; color: var(--op3);">OPCIÓN 03 · DEEP DIVE 2/2</span>
+        </div>
+        <h2 class="slide-title" style="margin-bottom: 22px;">Alcance Completo · RFP Compliant</h2>
+        <div class="content-area">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 14px; flex-grow: 1;">
+                <div class="tile opt-3" style="padding: 18px;">
+                    <h3 style="font-size: 16px; color: var(--op3); margin-bottom: 10px;"><i class="fa-solid fa-window-restore" style="margin-right: 8px;"></i>PÁGINAS &amp; LANDING PAGES</h3>
+                    <p style="font-size: 12px; color: var(--text-dim); margin: 0 0 8px;">Home dinámico · Blog filtros · Directorio + Maps · FAQ con IA · PQR · Banners CMS</p>
+                    <div style="font-family: var(--font-h); font-size: 11px; letter-spacing: 2px; color: var(--op3); margin: 8px 0 6px;">+ 5 LANDING PAGES COMERCIALES</div>
+                    <div style="display: flex; gap: 5px; flex-wrap: wrap;">
+                        <span style="background: rgba(254,20,131,0.12); border: 1px solid rgba(254,20,131,0.4); padding: 3px 8px; font-family: var(--font-h); font-size: 10px; color: #fff;">COTIZA</span>
+                        <span style="background: rgba(254,20,131,0.12); border: 1px solid rgba(254,20,131,0.4); padding: 3px 8px; font-family: var(--font-h); font-size: 10px; color: #fff;">PLANES</span>
+                        <span style="background: rgba(254,20,131,0.12); border: 1px solid rgba(254,20,131,0.4); padding: 3px 8px; font-family: var(--font-h); font-size: 10px; color: #fff;">TARJETA AZUL</span>
+                        <span style="background: rgba(254,20,131,0.12); border: 1px solid rgba(254,20,131,0.4); padding: 3px 8px; font-family: var(--font-h); font-size: 10px; color: #fff;">EXTERIOR</span>
+                        <span style="background: rgba(254,20,131,0.12); border: 1px solid rgba(254,20,131,0.4); padding: 3px 8px; font-family: var(--font-h); font-size: 10px; color: #fff;">PAGO 1ª</span>
+                    </div>
+                </div>
+                <div class="tile opt-3" style="padding: 18px;">
+                    <h3 style="font-size: 16px; color: var(--op3); margin-bottom: 10px;"><i class="fa-solid fa-cubes" style="margin-right: 8px;"></i>5 MÓDULOS ESPECIALES</h3>
+                    <p style="font-size: 12px; color: var(--text-dim); margin: 0 0 12px;">Construidos a medida con autenticación segura y sync APIs MedPlus.</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                        <div style="font-size: 12px; color: #fff;"><i class="fa-solid fa-file-arrow-down" style="color:var(--op3); margin-right:6px; width:16px;"></i>Labcore</div>
+                        <div style="font-size: 12px; color: #fff;"><i class="fa-solid fa-image-portrait" style="color:var(--op3); margin-right:6px; width:16px;"></i>Imágenes Dx</div>
+                        <div style="font-size: 12px; color: #fff;"><i class="fa-solid fa-file-invoice" style="color:var(--op3); margin-right:6px; width:16px;"></i>Certificados</div>
+                        <div style="font-size: 12px; color: #fff;"><i class="fa-solid fa-flag" style="color:var(--op3); margin-right:6px; width:16px;"></i>Línea Ética</div>
+                        <div style="font-size: 12px; color: #fff; grid-column: span 2;"><i class="fa-solid fa-credit-card" style="color:var(--op3); margin-right:6px; width:16px;"></i>Tarjeta Azul + PSE + contrato digital</div>
+                    </div>
+                </div>
+                <div class="tile opt-3" style="padding: 18px;">
+                    <h3 style="font-size: 16px; color: var(--op3); margin-bottom: 10px;"><i class="fa-solid fa-plug" style="margin-right: 8px;"></i>8 INTEGRACIONES CRÍTICAS</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px 14px;">
+                        <div style="font-size: 12px; color: var(--text-dim);"><i class="fa-solid fa-circle-check" style="color:var(--op3); margin-right:6px;"></i><strong style="color:#fff;">CRM MedPlus</strong></div>
+                        <div style="font-size: 12px; color: var(--text-dim);"><i class="fa-solid fa-circle-check" style="color:var(--op3); margin-right:6px;"></i><strong style="color:#fff;">Digitalk IA</strong></div>
+                        <div style="font-size: 12px; color: var(--text-dim);"><i class="fa-solid fa-circle-check" style="color:var(--op3); margin-right:6px;"></i><strong style="color:#fff;">PayU</strong> certif.</div>
+                        <div style="font-size: 12px; color: var(--text-dim);"><i class="fa-solid fa-circle-check" style="color:var(--op3); margin-right:6px;"></i><strong style="color:#fff;">APIs MedPlus</strong></div>
+                        <div style="font-size: 12px; color: var(--text-dim);"><i class="fa-solid fa-circle-check" style="color:var(--op3); margin-right:6px;"></i><strong style="color:#fff;">GTM + GA4</strong></div>
+                        <div style="font-size: 12px; color: var(--text-dim);"><i class="fa-solid fa-circle-check" style="color:var(--op3); margin-right:6px;"></i><strong style="color:#fff;">Meta Pixel</strong></div>
+                        <div style="font-size: 12px; color: var(--text-dim);"><i class="fa-solid fa-circle-check" style="color:var(--op3); margin-right:6px;"></i><strong style="color:#fff;">WA / Celeste</strong></div>
+                        <div style="font-size: 12px; color: var(--text-dim);"><i class="fa-solid fa-circle-check" style="color:var(--op3); margin-right:6px;"></i><strong style="color:#fff;">MS Clarity</strong></div>
+                    </div>
+                </div>
+                <div class="tile opt-3 featured-hard" style="padding: 18px;">
+                    <h3 style="font-size: 16px; color: var(--op3); margin-bottom: 10px;"><i class="fa-solid fa-shield-halved" style="margin-right: 8px;"></i>COMPLIANCE &amp; CIERRE</h3>
+                    <div style="display: grid; grid-template-columns: 1fr; gap: 4px;">
+                        <div style="font-size: 12px; color: var(--text-dim);"><i class="fa-solid fa-shield" style="color:var(--op3); margin-right:6px;"></i><strong style="color:#fff;">MFA</strong> · <strong style="color:#fff;">WCAG 2.1 AA</strong> · <strong style="color:#fff;">Pentesting ético</strong></div>
+                        <div style="font-size: 12px; color: var(--text-dim);"><i class="fa-solid fa-lock" style="color:var(--op3); margin-right:6px;"></i><strong style="color:#fff;">Headers OWASP</strong> · <strong style="color:#fff;">Backups</strong> con restore probado</div>
+                        <div style="font-size: 12px; color: var(--text-dim);"><i class="fa-solid fa-shield" style="color:var(--op3); margin-right:6px;"></i><strong style="color:#fff;">Garantía 6 meses</strong> post entrega</div>
+                        <div style="font-size: 12px; color: var(--text-dim);"><i class="fa-solid fa-graduation-cap" style="color:var(--op3); margin-right:6px;"></i><strong style="color:#fff;">Capacitación 8h</strong> grabada al equipo MedPlus</div>
+                        <div style="font-size: 12px; color: var(--text-dim);"><i class="fa-solid fa-book" style="color:var(--op3); margin-right:6px;"></i><strong style="color:#fff;">Docs técnicas</strong> + código fuente propiedad MedPlus</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 8: Suite de Inteligencia & Datos -->
+    <div class="slide-container" id="slide6">
+        <h2 class="slide-title">Suite de Inteligencia &amp; Datos</h2>
+        <div class="content-area">
+            <p style="font-size: 22px; margin-bottom: 40px;">
+                Incluimos en el alcance base la integración de las herramientas líderes para <strong style="color:var(--neon-cyan); font-weight:600;">trazabilidad total</strong>.
+            </p>
+            <div class="four-column">
+                <div class="logo-tile">
+                    <i class="fa-solid fa-chart-line" style="color:#F9AB00;"></i>
+                    <span>Google<br>Analytics 4</span>
+                </div>
+                <div class="logo-tile">
+                    <i class="fa-solid fa-tags" style="color:#4285F4;"></i>
+                    <span>Google<br>Tag Manager</span>
+                </div>
+                <div class="logo-tile">
+                    <i class="fa-solid fa-magnifying-glass-chart" style="color:#34A853;"></i>
+                    <span>Search<br>Console</span>
+                </div>
+                <div class="logo-tile" style="background:#1B66E5; border-color:#1B66E5;">
+                    <i class="fa-solid fa-eye" style="color:#fff;"></i>
+                    <span style="color:#fff;">Microsoft<br>Clarity</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 9: Comparativo de Arquitectura -->
+    <div class="slide-container" id="slide7">
+        <h2 class="slide-title">Comparativo de Arquitectura</h2>
+        <div class="content-area">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Atributo</th>
+                        <th class="col-op1">01 · CMS Ágil</th>
+                        <th class="col-op2">02 · Headless</th>
+                        <th class="col-op3">03 · Enterprise RFP</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="font-size:19px; padding:18px;"><strong class="row-label" style="font-size:18px;">Performance</strong></td>
+                        <td style="color:var(--op1); font-size:19px; padding:18px;">Bueno (85%)</td>
+                        <td style="color:var(--op2); font-size:19px; padding:18px;">Excelente (98%)</td>
+                        <td style="color:var(--op3); font-weight:700; font-size:19px; padding:18px;">Máximo (100%)</td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:19px; padding:18px;"><strong class="row-label" style="font-size:18px;">Seguridad</strong></td>
+                        <td style="color:var(--op1); font-size:19px; padding:18px;">Avanzada</td>
+                        <td style="color:var(--op2); font-size:19px; padding:18px;">Nivel Headless</td>
+                        <td style="color:var(--op3); font-weight:700; font-size:19px; padding:18px;">Enterprise + MFA + Pentest</td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:19px; padding:18px;"><strong class="row-label" style="font-size:18px;">Time-to-Market</strong></td>
+                        <td style="color:var(--op1); font-size:19px; padding:18px;">4–6 Semanas</td>
+                        <td style="color:var(--op2); font-size:19px; padding:18px;">10–12 Semanas</td>
+                        <td style="color:var(--op3); font-weight:700; font-size:19px; padding:18px;">16–20 Semanas</td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:19px; padding:18px;"><strong class="row-label" style="font-size:18px;">Escalabilidad</strong></td>
+                        <td style="color:var(--op1); font-size:19px; padding:18px;">Media-Alta</td>
+                        <td style="color:var(--op2); font-size:19px; padding:18px;">Alta</td>
+                        <td style="color:var(--op3); font-weight:700; font-size:19px; padding:18px;">Ilimitada</td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:19px; padding:18px;"><strong class="row-label" style="font-size:18px;">Cumplimiento RFP MedPlus</strong></td>
+                        <td style="color:var(--text-dim); font-size:19px; padding:18px;">Parcial</td>
+                        <td style="color:var(--text-dim); font-size:19px; padding:18px;">Parcial</td>
+                        <td style="color:var(--op3); font-weight:700; font-size:19px; padding:18px;">100% RFP</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Slide 10: Comparativo de Alcance / Features -->
+    <div class="slide-container" id="slide7b">
+        <h2 class="slide-title" style="font-size: 38px; margin-bottom: 25px;">Comparativo de Alcance · Features</h2>
+        <div class="content-area">
+            <table class="scope-table">
+                <thead>
+                    <tr>
+                        <th style="width: 48%;">Feature</th>
+                        <th class="col-op1" style="text-align:center;">01 · CMS Ágil</th>
+                        <th class="col-op2" style="text-align:center;">02 · Headless</th>
+                        <th class="col-op3" style="text-align:center;">03 · RFP</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="cat-row"><td colspan="4">— Páginas y Módulos —</td></tr>
+                    <tr>
+                        <td>Home + páginas institucionales</td>
+                        <td class="yes">✓</td><td class="yes-purple">✓</td><td class="yes-pink">✓</td>
+                    </tr>
+                    <tr>
+                        <td>Blog con filtros administrable desde CMS</td>
+                        <td class="yes">✓</td><td class="yes-purple">✓</td><td class="yes-pink">✓</td>
+                    </tr>
+                    <tr>
+                        <td>Landing Pages comerciales segmentadas</td>
+                        <td class="no">—</td><td class="info-purple">2 a elección</td><td class="info-pink">5 LPs RFP</td>
+                    </tr>
+                    <tr>
+                        <td>Cotizador multi-paso con captura de lead</td>
+                        <td class="no">—</td><td class="info-purple">Básico</td><td class="info-pink">CRO completo</td>
+                    </tr>
+                    <tr>
+                        <td>FAQ + PQR / Contáctanos</td>
+                        <td class="no">—</td><td class="info-purple">FAQ estático</td><td class="info-pink">FAQ con IA + PQR</td>
+                    </tr>
+                    <tr>
+                        <td>Directorio Médico + Google Maps + ficha prestador</td>
+                        <td class="no">—</td><td class="no">—</td><td class="yes-pink">✓</td>
+                    </tr>
+                    <tr>
+                        <td>Módulos especiales <span style="font-size:13px; opacity:0.7;">(Labcore, Imágenes Dx, Certificados, Línea Ética, Tarjeta Azul+PSE)</span></td>
+                        <td class="no">—</td><td class="info-purple">1 a elección</td><td class="info-pink">5 incluidos</td>
+                    </tr>
+
+                    <tr class="cat-row"><td colspan="4">— Stack &amp; Infraestructura —</td></tr>
+                    <tr>
+                        <td>CMS autogestionable</td>
+                        <td class="info">WordPress</td><td class="info-purple">Strapi</td><td class="info-pink">Custom + Control Center</td>
+                    </tr>
+                    <tr>
+                        <td>Infraestructura</td>
+                        <td class="info">VPS + R2</td><td class="info-purple">AWS EC2+RDS+R2</td><td class="info-pink">AWS S3 Full Custom</td>
+                    </tr>
+
+                    <tr class="cat-row"><td colspan="4">— Medición &amp; Integraciones —</td></tr>
+                    <tr>
+                        <td>Suite de medición <span style="font-size:13px; opacity:0.7;">(GA4 + GTM + Search Console + Clarity)</span></td>
+                        <td class="yes">✓</td><td class="yes-purple">✓</td><td class="yes-pink">✓</td>
+                    </tr>
+                    <tr>
+                        <td>Botón flotante WhatsApp / Bot Celeste</td>
+                        <td class="no">—</td><td class="yes-purple">✓</td><td class="yes-pink">✓</td>
+                    </tr>
+                    <tr>
+                        <td>Bolsa de horas para integraciones externas</td>
+                        <td class="info">20h</td><td class="info-purple">40h</td><td class="no">—</td>
+                    </tr>
+                    <tr>
+                        <td>8 integraciones críticas incluidas <span style="font-size:13px; opacity:0.7;">(CRM, PayU, Digitalk, APIs MedPlus, Pixel, WA)</span></td>
+                        <td class="no">—</td><td class="no">—</td><td class="yes-pink">✓</td>
+                    </tr>
+
+                    <tr class="cat-row"><td colspan="4">— Seguridad &amp; Compliance —</td></tr>
+                    <tr>
+                        <td>SSL A+ &middot; Cloudflare WAF &middot; compresión WebP</td>
+                        <td class="yes">✓</td><td class="yes-purple">✓</td><td class="yes-pink">✓</td>
+                    </tr>
+                    <tr>
+                        <td>Headers OWASP</td>
+                        <td class="no">—</td><td class="info-purple">Base</td><td class="info-pink">Completos</td>
+                    </tr>
+                    <tr>
+                        <td>MFA + WCAG 2.1 AA + Pentesting ético + Backups con restore</td>
+                        <td class="no">—</td><td class="no">—</td><td class="yes-pink">✓</td>
+                    </tr>
+
+                    <tr class="cat-row"><td colspan="4">— Post Go-Live —</td></tr>
+                    <tr>
+                        <td>Garantía post entrega para corrección de errores</td>
+                        <td class="info">60 días</td><td class="info-purple">3 meses</td><td class="info-pink">6 meses</td>
+                    </tr>
+                    <tr>
+                        <td>Capacitación 8h + docs técnicas + código fuente propiedad MedPlus</td>
+                        <td class="no">—</td><td class="no">—</td><td class="yes-pink">✓</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Slide 11: Infraestructura por Opción -->
+    <div class="slide-container" id="slide8">
+        <h2 class="slide-title">Infraestructura por Opción</h2>
+        <div class="content-area">
+            <p style="font-size: 17px; margin-bottom: 24px; max-width: 1000px;">
+                Cada opción se asienta sobre una arquitectura distinta — desde VPS optimizado hasta AWS Full Stack — siempre con <strong style="color:#fff;">Cloudflare</strong> al frente como capa de seguridad y borde.
+            </p>
+            <div class="three-column">
+                <div class="tile opt-1" style="padding: 22px;">
+                    <div style="display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px;">
+                        <span style="font-family: var(--font-h); font-size: 32px; color: var(--op1); line-height:1; text-shadow: 0 0 12px var(--op1);">01</span>
+                        <span style="font-family: var(--font-h); font-size: 11px; letter-spacing:2px; color: var(--text-dim);">CMS ÁGIL</span>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div>
+                            <i class="fa-solid fa-server" style="color: var(--op1); margin-right: 10px;"></i>
+                            <strong style="color:#fff; font-family: var(--font-h); font-size: 15px; letter-spacing: 1px;">VPS PREMIUM</strong>
+                            <p style="font-size: 13px; margin: 4px 0 0 28px;">Geniorama o Hostinger optimizado con <strong style="color:#fff;">LSCache</strong> a nivel servidor.</p>
+                        </div>
+                        <div>
+                            <i class="fa-solid fa-cloud-arrow-up" style="color: var(--op1); margin-right: 10px;"></i>
+                            <strong style="color:#fff; font-family: var(--font-h); font-size: 15px; letter-spacing: 1px;">CLOUDFLARE R2</strong>
+                            <p style="font-size: 13px; margin: 4px 0 0 28px;">Assets servidos desde el borde global.</p>
+                        </div>
+                        <div>
+                            <i class="fa-brands fa-cloudflare" style="color: var(--op1); margin-right: 10px;"></i>
+                            <strong style="color:#fff; font-family: var(--font-h); font-size: 15px; letter-spacing: 1px;">CF WAF BÁSICO</strong>
+                            <p style="font-size: 13px; margin: 4px 0 0 28px;">Protección DDoS + reglas estándar.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="tile opt-2" style="padding: 22px;">
+                    <div style="display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px;">
+                        <span style="font-family: var(--font-h); font-size: 32px; color: var(--op2); line-height:1; text-shadow: 0 0 12px var(--op2);">02</span>
+                        <span style="font-family: var(--font-h); font-size: 11px; letter-spacing:2px; color: var(--text-dim);">HEADLESS CMS</span>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div>
+                            <i class="fa-brands fa-aws" style="color: var(--op2); margin-right: 10px;"></i>
+                            <strong style="color:#fff; font-family: var(--font-h); font-size: 15px; letter-spacing: 1px;">AWS EC2 + RDS</strong>
+                            <p style="font-size: 13px; margin: 4px 0 0 28px;">Compute elástico + base de datos gestionada para Strapi.</p>
+                        </div>
+                        <div>
+                            <i class="fa-solid fa-cloud-arrow-up" style="color: var(--op2); margin-right: 10px;"></i>
+                            <strong style="color:#fff; font-family: var(--font-h); font-size: 15px; letter-spacing: 1px;">CLOUDFLARE R2</strong>
+                            <p style="font-size: 13px; margin: 4px 0 0 28px;">Storage de assets + CDN global.</p>
+                        </div>
+                        <div>
+                            <i class="fa-brands fa-cloudflare" style="color: var(--op2); margin-right: 10px;"></i>
+                            <strong style="color:#fff; font-family: var(--font-h); font-size: 15px; letter-spacing: 1px;">CF WAF + OWASP BASE</strong>
+                            <p style="font-size: 13px; margin: 4px 0 0 28px;">Reglas avanzadas WAF + headers OWASP base.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="tile opt-3 featured-hard" style="padding: 22px;">
+                    <div style="display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px;">
+                        <span style="font-family: var(--font-h); font-size: 32px; color: var(--op3); line-height:1; text-shadow: 0 0 14px var(--op3);">03</span>
+                        <span style="font-family: var(--font-h); font-size: 11px; letter-spacing:2px; color: var(--op3);">ENTERPRISE · RFP</span>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div>
+                            <i class="fa-brands fa-aws" style="color: var(--op3); margin-right: 10px;"></i>
+                            <strong style="color:#fff; font-family: var(--font-h); font-size: 15px; letter-spacing: 1px;">AWS FULL STACK</strong>
+                            <p style="font-size: 13px; margin: 4px 0 0 28px;">EC2 + S3 + RDS en centros <strong style="color:#fff;">Tier 4</strong>. Escalado ilimitado.</p>
+                        </div>
+                        <div>
+                            <i class="fa-solid fa-shield-halved" style="color: var(--op3); margin-right: 10px;"></i>
+                            <strong style="color:#fff; font-family: var(--font-h); font-size: 15px; letter-spacing: 1px;">CLOUDFLARE SHIELD</strong>
+                            <p style="font-size: 13px; margin: 4px 0 0 28px;">WAF Enterprise + headers OWASP completos + bot management.</p>
+                        </div>
+                        <div>
+                            <i class="fa-solid fa-database" style="color: var(--op3); margin-right: 10px;"></i>
+                            <strong style="color:#fff; font-family: var(--font-h); font-size: 15px; letter-spacing: 1px;">BACKUPS + MFA</strong>
+                            <p style="font-size: 13px; margin: 4px 0 0 28px;">Backups automatizados con restore probado + MFA en portales críticos.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 12: Protocolo de Migración Segura -->
+    <div class="slide-container" id="slide10">
+        <h2 class="slide-title">Protocolo de Migración Segura</h2>
+        <div class="content-area" style="justify-content: center;">
+            <div class="migration-steps">
+                <div class="mstep">
+                    <h3>01. AUDIT</h3>
+                    <div class="dot"></div>
+                    <p>Auditoría de contenidos y limpieza de activos legacy.</p>
+                </div>
+                <div class="mstep">
+                    <h3>02. MAP</h3>
+                    <div class="dot"></div>
+                    <p>Transferencia a PostgreSQL y Cloudflare R2 / S3.</p>
+                </div>
+                <div class="mstep">
+                    <h3>03. SEO SAFE</h3>
+                    <div class="dot"></div>
+                    <p>Mapping de redirecciones 301 para no perder ranking.</p>
+                </div>
+                <div class="mstep">
+                    <h3>04. GO LIVE</h3>
+                    <div class="dot"></div>
+                    <p>Despliegue final con monitoreo post-lanzamiento.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 13: Alcance & Términos -->
+    <div class="slide-container" id="slide11">
+        <h2 class="slide-title">Alcance &amp; Términos</h2>
+        <div class="content-area">
+            <div class="three-column" style="margin-bottom: 18px;">
+                <div class="tile opt-1" style="padding: 20px;">
+                    <div style="display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px;">
+                        <span style="font-family: var(--font-h); font-size: 36px; color: var(--op1); line-height:1; text-shadow: 0 0 12px var(--op1);">01</span>
+                        <span style="font-family: var(--font-h); font-size: 11px; letter-spacing:2px; color: var(--text-dim);">CMS ÁGIL</span>
+                    </div>
+                    <h3 style="color: #fff; font-size: 19px; margin: 0 0 8px;">Entrada Rápida</h3>
+                    <div class="bullet-list" style="margin-top: 10px;">
+                        <ul style="font-size: 13px;">
+                            <li style="font-size: 13px;">Sitio principal + páginas institucionales.</li>
+                            <li style="font-size: 13px;">Blog con filtros CMS.</li>
+                            <li style="font-size: 13px;">Suite de medición completa.</li>
+                            <li style="font-size: 13px;"><strong style="color:var(--op1);">20h</strong> de integraciones externas.</li>
+                            <li style="font-size: 13px;">Garantía <strong style="color:var(--op1);">60 días</strong>.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tile opt-2" style="padding: 20px;">
+                    <div style="display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px;">
+                        <span style="font-family: var(--font-h); font-size: 36px; color: var(--op2); line-height:1; text-shadow: 0 0 12px var(--op2);">02</span>
+                        <span style="font-family: var(--font-h); font-size: 11px; letter-spacing:2px; color: var(--text-dim);">HEADLESS CMS</span>
+                    </div>
+                    <h3 style="color: #fff; font-size: 19px; margin: 0 0 8px;">Crecimiento</h3>
+                    <div class="bullet-list" style="margin-top: 10px;">
+                        <ul>
+                            <li style="font-size: 13px;">Todo lo de Op 01.</li>
+                            <li style="font-size: 13px;"><strong style="color:#fff;">2 LPs comerciales</strong> a elección.</li>
+                            <li style="font-size: 13px;">Cotizador básico + FAQ + botón WA/Celeste.</li>
+                            <li style="font-size: 13px;"><strong style="color:#fff;">1 módulo especial</strong> a elección.</li>
+                            <li style="font-size: 13px;"><strong style="color:var(--op2);">40h</strong> integraciones + Garantía <strong style="color:var(--op2);">3 meses</strong>.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tile opt-3 featured-hard" style="padding: 20px;">
+                    <div style="display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px;">
+                        <span style="font-family: var(--font-h); font-size: 36px; color: var(--op3); line-height:1; text-shadow: 0 0 14px var(--op3);">03</span>
+                        <span style="font-family: var(--font-h); font-size: 11px; letter-spacing:2px; color: var(--op3);">ENTERPRISE · RFP</span>
+                    </div>
+                    <h3 style="color: #fff; font-size: 19px; margin: 0 0 8px;">Premium 100%</h3>
+                    <div class="bullet-list" style="margin-top: 10px;">
+                        <ul>
+                            <li style="font-size: 13px;">5 LPs + Cotizador CRO + Directorio + 5 módulos.</li>
+                            <li style="font-size: 13px;">FAQ con IA + PQR + banners CMS.</li>
+                            <li style="font-size: 13px;"><strong style="color:#fff;">8 integraciones críticas</strong> incluidas.</li>
+                            <li style="font-size: 13px;">MFA + WCAG AA + pentesting + headers OWASP.</li>
+                            <li style="font-size: 13px;">Garantía <strong style="color:var(--op3);">6 meses</strong> + capacitación 8h + docs.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="tile" style="padding: 14px;">
+                <p style="font-size: 13px; margin: 0; line-height: 1.6;"><strong style="color:var(--neon-cyan); font-family: var(--font-h); letter-spacing:1px;">NOTA:</strong> en Opciones 01 y 02, cualquier integración con APIs de terceros, pasarelas de pago o sistemas de salud propios de MedPlus que exceda la bolsa de horas tendrá un cobro adicional según evaluación de factibilidad técnica.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 14: Propuesta Económica -->
+    <div class="slide-container" id="slide12">
+        <h2 class="slide-title" style="margin-bottom: 30px;">Propuesta Económica</h2>
+        <div class="content-area">
+            <div class="three-column">
+                <div class="tile opt-1 price-block">
+                    <div style="font-family: var(--font-h); font-size: 50px; color: var(--op1); line-height:1; text-shadow: 0 0 18px var(--op1); margin-bottom: 4px;">01</div>
+                    <div style="font-family: var(--font-h); font-size: 12px; color: var(--op1); letter-spacing: 2px; margin-bottom: 14px;">CMS ÁGIL</div>
+                    <div>
+                        <span class="price-value" style="font-size: 40px; color: var(--op1); text-shadow: 0 0 18px rgba(0,229,255,0.4);">$6.250.000</span>
+                        <span class="price-unit" style="font-size: 16px;">cop</span>
+                    </div>
+                    <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(0,229,255,0.2);">
+                        <div style="font-family: var(--font-h); font-size: 11px; color: var(--op1); letter-spacing: 2px; margin-bottom: 8px;">FORMA DE PAGO</div>
+                        <div style="display: flex; gap: 6px; justify-content: center;">
+                            <span style="flex: 1; background: rgba(0,229,255,0.12); border: 1px solid rgba(0,229,255,0.4); padding: 6px; font-family: var(--font-h); font-size: 14px; color: #fff; text-align: center;">50%<br><span style="font-size: 9px; color: var(--text-dim); letter-spacing: 1px;">ANTICIPO</span></span>
+                            <span style="flex: 1; background: rgba(0,229,255,0.12); border: 1px solid rgba(0,229,255,0.4); padding: 6px; font-family: var(--font-h); font-size: 14px; color: #fff; text-align: center;">50%<br><span style="font-size: 9px; color: var(--text-dim); letter-spacing: 1px;">ENTREGA</span></span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 12px; font-size: 11px; color: var(--text-dim);">Sitio principal · 20h integraciones · 60 días garantía</div>
+                </div>
+                <div class="tile opt-2 price-block">
+                    <div style="font-family: var(--font-h); font-size: 50px; color: var(--op2); line-height:1; text-shadow: 0 0 18px var(--op2); margin-bottom: 4px;">02</div>
+                    <div style="font-family: var(--font-h); font-size: 12px; color: var(--op2); letter-spacing: 2px; margin-bottom: 14px;">HEADLESS CMS</div>
+                    <div>
+                        <span class="price-value" style="font-size: 40px; color: var(--op2); text-shadow: 0 0 18px rgba(168,85,247,0.4);">$25.000.000</span>
+                        <span class="price-unit" style="font-size: 16px;">cop</span>
+                    </div>
+                    <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(168,85,247,0.25);">
+                        <div style="font-family: var(--font-h); font-size: 11px; color: var(--op2); letter-spacing: 2px; margin-bottom: 8px;">FORMA DE PAGO</div>
+                        <div style="display: flex; gap: 5px; justify-content: center;">
+                            <span style="flex: 1; background: rgba(168,85,247,0.14); border: 1px solid rgba(168,85,247,0.45); padding: 6px 4px; font-family: var(--font-h); font-size: 14px; color: #fff; text-align: center;">50%<br><span style="font-size: 9px; color: var(--text-dim); letter-spacing: 1px;">ANTICIPO</span></span>
+                            <span style="flex: 1; background: rgba(168,85,247,0.14); border: 1px solid rgba(168,85,247,0.45); padding: 6px 4px; font-family: var(--font-h); font-size: 14px; color: #fff; text-align: center;">30%<br><span style="font-size: 9px; color: var(--text-dim); letter-spacing: 1px;">HITO</span></span>
+                            <span style="flex: 1; background: rgba(168,85,247,0.14); border: 1px solid rgba(168,85,247,0.45); padding: 6px 4px; font-family: var(--font-h); font-size: 14px; color: #fff; text-align: center;">20%<br><span style="font-size: 9px; color: var(--text-dim); letter-spacing: 1px;">ENTREGA</span></span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 12px; font-size: 11px; color: var(--text-dim);">+ 2 LPs · Cotizador · Blog · 1 módulo · 40h · 3m garantía</div>
+                </div>
+                <div class="tile opt-3 featured-hard price-block">
+                    <div style="position: absolute; top: -12px; right: 18px; background: var(--op3); color: #fff; font-family: var(--font-h); font-size: 11px; letter-spacing: 2px; padding: 4px 12px;">RECOMENDADO</div>
+                    <div style="font-family: var(--font-h); font-size: 50px; color: var(--op3); line-height:1; text-shadow: 0 0 22px var(--op3); margin-bottom: 4px;">03</div>
+                    <div style="font-family: var(--font-h); font-size: 12px; color: var(--op3); letter-spacing: 2px; margin-bottom: 14px;">ENTERPRISE · RFP</div>
+                    <div>
+                        <span class="price-value" style="font-size: 40px; color: var(--op3); text-shadow: 0 0 22px rgba(254,20,131,0.5);">$48.000.000</span>
+                        <span class="price-unit" style="font-size: 16px;">cop</span>
+                    </div>
+                    <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(254,20,131,0.3);">
+                        <div style="font-family: var(--font-h); font-size: 11px; color: var(--op3); letter-spacing: 2px; margin-bottom: 8px;">FORMA DE PAGO</div>
+                        <div style="background: rgba(254,20,131,0.15); border: 1px solid rgba(254,20,131,0.5); padding: 8px; text-align: center;">
+                            <div style="font-family: var(--font-h); font-size: 14px; color: var(--op3); letter-spacing: 1px;">5 CUOTAS MENSUALES</div>
+                            <div style="font-family: var(--font-h); font-size: 20px; color: #fff; margin-top: 4px;">$9.600.000<span style="font-size: 12px; color: var(--text-dim); margin-left: 4px;">cop/mes</span></div>
+                            <div style="font-size: 10px; color: var(--text-dim); letter-spacing: 1px; margin-top: 4px;">DURANTE EL DESARROLLO (≈ 5 MESES)</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 12px; font-size: 11px; color: var(--text-dim);">5 LPs + 5 módulos + 8 integraciones + 6m garantía</div>
+                </div>
+            </div>
+            <p style="text-align: center; margin-top: 22px; font-size: 13px; color: var(--text-dim); font-style: italic;">
+                Valores en pesos colombianos, exentos de IVA según régimen aplicable. No incluye licencias de terceros (hosting, Google Maps API, comisiones PayU). <strong style="color: var(--neon-cyan); font-style: normal;">*Aplican términos y condiciones.</strong>
+            </p>
+        </div>
+    </div>
+
+    <!-- Slide 15: Cierre -->
+    <div class="slide-container" id="slide13">
+        <div class="content-area" style="text-align: center;">
+            <h1 style="font-size: 100px; line-height: 1;">CONSTRUYAMOS<br><span style="color:var(--genio-pink)">EL FUTURO</span></h1>
+            <p style="font-size: 24px; margin-top: 40px; color: var(--text-dim);">Agencia Geniorama  |  Expertos en Ingeniería Digital</p>
+            <div style="height: 2px; width: 240px; background: rgba(255,255,255,0.15); margin: 60px auto 40px;"></div>
+            <div style="font-family: var(--font-h); font-size: 22px; letter-spacing: 4px;">
+                <p style="margin: 0 0 14px; color: #fff;">GENIORAMA.CO</p>
+                <p style="margin: 0; color: var(--neon-cyan); font-size: 18px; letter-spacing: 2px; font-family: var(--font-b);">angel.burgos@geniorama.co</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- GSAP + ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Detectar si estamos imprimiendo o reducir-motion: skip animations
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        if (!reduceMotion) {
+            // 1) Cada slide entra con fade + slide-up al aparecer en viewport
+            gsap.utils.toArray('.slide-container').forEach((slide) => {
+                slide.classList.add('gsap-ready');
+                gsap.from(slide, {
+                    scrollTrigger: {
+                        trigger: slide,
+                        start: 'top 75%',
+                        end: 'top 25%',
+                        toggleActions: 'play none none none'
+                    },
+                    opacity: 0,
+                    y: 40,
+                    duration: 0.7,
+                    ease: 'power2.out'
+                });
+            });
+
+            // 2) Números prominentes (.opt-number, .big-number) hacen scale-in con bounce
+            gsap.utils.toArray('.opt-number, .big-number').forEach((num) => {
+                gsap.from(num, {
+                    scrollTrigger: {
+                        trigger: num,
+                        start: 'top 80%',
+                        toggleActions: 'play none none none'
+                    },
+                    scale: 0.4,
+                    opacity: 0,
+                    duration: 0.7,
+                    ease: 'back.out(1.7)'
+                });
+            });
+
+            // 3) Tiles dentro de cada slide entran con stagger
+            gsap.utils.toArray('.slide-container').forEach((slide) => {
+                const tiles = slide.querySelectorAll('.tile');
+                if (tiles.length > 1) {
+                    gsap.from(tiles, {
+                        scrollTrigger: {
+                            trigger: slide,
+                            start: 'top 70%',
+                            toggleActions: 'play none none none'
+                        },
+                        opacity: 0,
+                        y: 30,
+                        duration: 0.5,
+                        stagger: 0.08,
+                        ease: 'power2.out'
+                    });
+                }
+            });
+
+            // 4) Filas de tablas entran con stagger
+            gsap.utils.toArray('table').forEach((table) => {
+                const rows = table.querySelectorAll('tbody tr');
+                gsap.from(rows, {
+                    scrollTrigger: {
+                        trigger: table,
+                        start: 'top 70%',
+                        toggleActions: 'play none none none'
+                    },
+                    opacity: 0,
+                    x: -20,
+                    duration: 0.4,
+                    stagger: 0.05,
+                    ease: 'power1.out'
+                });
+            });
+
+            // 5) Slide titles con border-left pink animan el border al entrar
+            gsap.utils.toArray('.slide-title').forEach((title) => {
+                gsap.from(title, {
+                    scrollTrigger: {
+                        trigger: title,
+                        start: 'top 80%',
+                        toggleActions: 'play none none none'
+                    },
+                    x: -30,
+                    opacity: 0,
+                    duration: 0.6,
+                    ease: 'power2.out'
+                });
+            });
+        }
+    </script>
+
+</body>
+</html>

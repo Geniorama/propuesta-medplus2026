@@ -1,0 +1,213 @@
+/* Gate cyberpunk para propuestas Geniorama × MedPlus */
+.medplus-gate {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: #00041a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Outfit', sans-serif;
+    transition: opacity 0.5s ease;
+    overflow: hidden;
+}
+.medplus-gate::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(90deg, rgba(254, 20, 131, 0.05) 1px, transparent 1px),
+        linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+}
+.medplus-gate::after {
+    content: '';
+    position: absolute;
+    bottom: -200px;
+    right: -200px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(254, 20, 131, 0.2) 0%, transparent 70%);
+    filter: blur(60px);
+    pointer-events: none;
+}
+.medplus-gate.unlocked {
+    opacity: 0;
+    pointer-events: none;
+}
+.medplus-gate.shake .gate-card { animation: gate-shake 0.4s; }
+@keyframes gate-shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-12px); }
+    75% { transform: translateX(12px); }
+}
+
+.gate-card {
+    position: relative;
+    z-index: 2;
+    background: rgba(0, 10, 61, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(254, 20, 131, 0.4);
+    padding: 48px 44px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(254, 20, 131, 0.15);
+}
+.gate-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 5px; height: 100%;
+    background: #FE1483;
+}
+
+.gate-brand {
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    letter-spacing: 4px;
+    color: #00e5ff;
+    margin-bottom: 26px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+.gate-brand .gate-diamond {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background: #FE1483;
+    transform: rotate(45deg);
+}
+
+.gate-card h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 38px;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0 0 12px;
+    line-height: 1;
+}
+.gate-card h2 span { color: #FE1483; text-shadow: 0 0 20px #FE1483; }
+
+.gate-desc {
+    font-size: 14px;
+    color: #cbd5e1;
+    margin: 0 0 24px;
+    line-height: 1.55;
+}
+
+.gate-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+/* Wrapper que contiene input real (invisible) + capa de display */
+.gate-pwd-wrap {
+    position: relative;
+    background: rgba(0, 4, 26, 0.85);
+    border: 1px solid rgba(0, 229, 255, 0.35);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.gate-pwd-wrap.is-focused {
+    border-color: #FE1483;
+    box-shadow: 0 0 12px rgba(254, 20, 131, 0.35);
+}
+/* Variables compartidas para garantizar alineación exacta input/display */
+.gate-pwd-wrap {
+    --pwd-font: ui-monospace, SFMono-Regular, 'Menlo', 'Consolas', 'Liberation Mono', monospace;
+    --pwd-size: 16px;
+    --pwd-spacing: 4px;
+    --pwd-padding: 14px 18px;
+}
+/* Input real: invisible visualmente pero funcional */
+.gate-form .gate-pwd-real {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    caret-color: #FE1483;
+    padding: var(--pwd-padding);
+    font-family: var(--pwd-font);
+    font-size: var(--pwd-size);
+    letter-spacing: var(--pwd-spacing);
+    outline: none;
+    text-shadow: none;
+    position: relative;
+    z-index: 2;
+    display: block;
+}
+.gate-form .gate-pwd-real::selection { background: rgba(254, 20, 131, 0.3); }
+.gate-form .gate-pwd-real::placeholder {
+    color: rgba(255, 255, 255, 0.25);
+    -webkit-text-fill-color: rgba(255, 255, 255, 0.25);
+    letter-spacing: var(--pwd-spacing);
+}
+/* Capa que renderiza dots + último carácter visible — mismos parámetros que el input */
+.gate-pwd-display {
+    position: absolute;
+    inset: 0;
+    padding: var(--pwd-padding);
+    color: #fff;
+    font-family: var(--pwd-font);
+    font-size: var(--pwd-size);
+    letter-spacing: var(--pwd-spacing);
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+    z-index: 1;
+    white-space: pre;
+    overflow: hidden;
+}
+.gate-pwd-display .gate-pwd-last {
+    color: #FE1483;
+    transition: color 0.25s ease;
+}
+.gate-pwd-display.is-masked .gate-pwd-last { color: #fff; }
+.gate-form button {
+    background: #FE1483;
+    color: #fff;
+    border: none;
+    padding: 14px 18px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-weight: 700;
+    transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+}
+.gate-form button:hover {
+    background: #ff3a9b;
+    box-shadow: 0 0 24px rgba(254, 20, 131, 0.55);
+}
+.gate-form button:active { transform: translateY(1px); }
+
+.gate-error {
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    color: #FE1483;
+    margin: 12px 0 0;
+    min-height: 18px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.gate-footer {
+    margin-top: 26px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.35);
+    text-align: center;
+}
+
+@media print {
+    .medplus-gate { display: none !important; }
+}

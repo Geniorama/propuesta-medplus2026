@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soporte Continuo Medplus x Geniorama</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="gate.css">
+    <script src="gate.js" defer></script>
+    <style>
+        /* CONFIGURACIÓN CORPORATIVA GENIORAMA */
+        :root {
+            --genio-blue: #000A3D;
+            --genio-pink: #FE1483;
+            --bg-dark: #00041a;
+            --bg-card: rgba(0, 10, 61, 0.7);
+            --neon-cyan: #00e5ff;
+            --neon-purple: #a855f7;
+            --text-main: #ffffff;
+            --text-dim: #cbd5e1;
+            --font-h: 'Oswald', sans-serif;
+            --font-b: 'Outfit', sans-serif;
+            /* Colores identitarios por Opción */
+            --op1: var(--neon-cyan);
+            --op2: var(--neon-purple);
+            --op3: var(--genio-pink);
+        }
+
+        * { box-sizing: border-box; -webkit-print-color-adjust: exact; }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            font-family: var(--font-b);
+            color: var(--text-main);
+        }
+
+        /* ESTRUCTURA DE DIAPOSITIVA EXPORTABLE (16:9) */
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: var(--bg-dark);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 70px;
+            margin: 0 auto;
+            page-break-after: always;
+            border-bottom: 1px solid #111;
+        }
+
+        /* FONDO CYBERPUNK GENIORAMA */
+        .slide-container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background:
+                linear-gradient(90deg, rgba(254, 20, 131, 0.05) 1px, transparent 1px),
+                linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 0;
+        }
+
+        .slide-container::after {
+            content: '';
+            position: absolute;
+            bottom: -150px;
+            right: -150px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(254, 20, 131, 0.15) 0%, transparent 70%);
+            z-index: 0;
+            filter: blur(50px);
+        }
+
+        .slide-container > * { position: relative; z-index: 2; }
+
+        /* TIPOGRAFÍA Y TÍTULOS */
+        h1, h2, h3 { font-family: var(--font-h); text-transform: uppercase; margin: 0; letter-spacing: 2px; }
+
+        h1 { font-size: 85px; color: #fff; line-height: 0.9; text-shadow: 0 0 20px var(--genio-pink); }
+
+        .slide-title {
+            font-size: 44px;
+            color: #fff;
+            margin-bottom: 50px;
+            border-left: 10px solid var(--genio-pink);
+            padding-left: 25px;
+        }
+
+        p, li { font-size: 21px; line-height: 1.5; color: var(--text-dim); }
+
+        .content-area { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; }
+
+        /* COMPONENTES */
+        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: stretch; }
+        .three-column { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; align-items: stretch; }
+
+        .tile {
+            background: var(--bg-card);
+            border: 1px solid rgba(254, 20, 131, 0.2);
+            padding: 35px;
+            border-radius: 4px;
+            position: relative;
+            backdrop-filter: blur(10px);
+            height: 100%;
+        }
+        .tile::before { content: ''; position: absolute; top: 0; left: 0; width: 5px; height: 100%; background: var(--genio-pink); }
+        .tile h3 { font-size: 30px; color: var(--neon-cyan); margin-bottom: 15px; }
+
+        /* SISTEMA DE OPCIONES — color identitario por tier */
+        .opt-1 .tile, .tile.opt-1 { border-color: rgba(0, 229, 255, 0.35); }
+        .opt-1 .tile::before, .tile.opt-1::before { background: var(--op1); }
+        .opt-1 .tile h3, .tile.opt-1 h3 { color: var(--op1); }
+
+        .opt-2 .tile, .tile.opt-2 { border-color: rgba(168, 85, 247, 0.4); }
+        .opt-2 .tile::before, .tile.opt-2::before { background: var(--op2); }
+        .opt-2 .tile h3, .tile.opt-2 h3 { color: var(--op2); }
+
+        .opt-3 .tile, .tile.opt-3 { border-color: rgba(254, 20, 131, 0.45); }
+        .opt-3 .tile::before, .tile.opt-3::before { background: var(--op3); }
+        .opt-3 .tile h3, .tile.opt-3 h3 { color: var(--op3); }
+        .tile.opt-3.featured-hard {
+            border: 2px solid var(--op3);
+            box-shadow: 0 0 40px rgba(254, 20, 131, 0.35), inset 0 0 30px rgba(254, 20, 131, 0.06);
+        }
+
+        /* Numeración prominente en slides de Opción */
+        .opt-header {
+            display: flex;
+            align-items: baseline;
+            gap: 28px;
+            margin-bottom: 28px;
+            border-left: 10px solid var(--option-color, var(--genio-pink));
+            padding-left: 25px;
+        }
+        .opt-header .opt-number {
+            font-family: var(--font-h);
+            font-size: 120px;
+            line-height: 0.85;
+            color: var(--option-color, var(--genio-pink));
+            text-shadow: 0 0 25px var(--option-color, var(--genio-pink));
+            font-weight: 700;
+            letter-spacing: -2px;
+        }
+        .opt-header .opt-titles { display: flex; flex-direction: column; gap: 4px; padding-bottom: 6px; }
+        .opt-header .opt-tag {
+            font-family: var(--font-h);
+            font-size: 13px;
+            letter-spacing: 4px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+        }
+        .opt-header .opt-name {
+            font-family: var(--font-h);
+            font-size: 38px;
+            color: #fff;
+            line-height: 1;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .opt-header .opt-name .accent { color: var(--option-color, var(--genio-pink)); }
+
+        .badge { background: var(--genio-pink); color: white; padding: 5px 20px; font-family: var(--font-h); font-size: 18px; text-transform: uppercase; display: inline-block; margin-bottom: 20px; letter-spacing: 2px; }
+
+        .big-number { font-family: var(--font-h); font-size: 130px; color: var(--option-color, var(--genio-pink)); line-height: 1; text-shadow: 0 0 30px var(--option-color, var(--genio-pink)); font-weight: 700; }
+
+        /* TABLAS */
+        table { width: 100%; border-collapse: collapse; background: rgba(0, 10, 61, 0.6); }
+        th { background: var(--genio-pink); color: #fff; padding: 18px 22px; text-align: left; font-family: var(--font-h); font-size: 20px; letter-spacing: 1.5px; }
+        th.col-op1 { background: rgba(0, 229, 255, 0.85); color: var(--bg-dark); }
+        th.col-op2 { background: rgba(168, 85, 247, 0.85); color: #fff; }
+        th.col-op3 { background: var(--op3); color: #fff; }
+        td { padding: 18px 22px; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 18px; color: var(--text-dim); }
+
+        .bullet-list ul { list-style: none; padding: 0; margin: 0; }
+        .bullet-list li { margin-bottom: 14px; padding-left: 32px; position: relative; font-size: 18px; }
+        .bullet-list li::before { content: '>'; position: absolute; left: 0; color: var(--genio-pink); font-family: var(--font-h); font-size: 22px; font-weight: 700; top: -4px; }
+
+        /* BARRA DE NAVEGACIÓN ENTRE PROPUESTAS (solo pantalla) */
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(0, 4, 26, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(254, 20, 131, 0.3);
+            padding: 14px 30px;
+            display: flex;
+            gap: 28px;
+            align-items: center;
+            font-family: var(--font-h);
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 2px;
+            flex-wrap: wrap;
+        }
+        .nav-bar a {
+            color: var(--text-dim);
+            text-decoration: none;
+            padding: 6px 14px;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .nav-bar a:hover { color: #fff; border-color: var(--neon-cyan); }
+        .nav-bar a.active { color: var(--genio-pink); border-color: var(--genio-pink); box-shadow: 0 0 10px rgba(254, 20, 131, 0.4); }
+        .nav-bar .nav-brand { color: var(--neon-cyan); margin-right: auto; font-weight: 700; }
+
+        /* SCROLL SNAP & ANIMATIONS — solo en pantalla */
+        @media screen {
+            html {
+                scroll-snap-type: y proximity;
+                scroll-behavior: smooth;
+            }
+            .slide-container {
+                scroll-snap-align: start;
+                scroll-snap-stop: always;
+                min-height: 100vh;
+            }
+            .slide-container.gsap-ready > *:not(script) {
+                will-change: transform, opacity;
+            }
+        }
+
+        @media print {
+            body { background: none; }
+            .slide-container { margin: 0; border: none; box-shadow: none; min-height: auto; }
+            .nav-bar { display: none; }
+            html { scroll-snap-type: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Barra de navegación entre propuestas (oculta en impresión / PDF) -->
+    <nav class="nav-bar">
+        <span class="nav-brand">GENIORAMA × MEDPLUS</span>
+        <a href="index.html">Inicio</a>
+        <a href="medplus-rediseno.html">Rediseño Web</a>
+        <a href="medplus-soporte.html" class="active">Soporte y Gestión</a>
+    </nav>
+
+    <!-- Slide 1: Portada -->
+    <div class="slide-container" id="slide1">
+        <div class="content-area" style="text-align: center;">
+            <div style="font-family: var(--font-h); font-size: 22px; letter-spacing: 6px; color: var(--neon-cyan); margin-bottom: 30px;">
+                <span style="display:inline-block; width:14px; height:14px; background:var(--genio-pink); transform:rotate(45deg); margin-right:12px; vertical-align:middle;"></span>
+                GENIORAMA
+            </div>
+            <h1>SOPORTE <br><span style="color:var(--genio-pink)">CONTINUO</span> MEDPLUS</h1>
+            <p style="font-family: var(--font-b); font-size: 30px; color: var(--neon-cyan); margin-top: 25px; font-weight: 300;">Garantía de Evolución e Integridad Digital</p>
+            <div style="height: 4px; width: 320px; background: var(--genio-pink); margin: 45px auto; box-shadow: 0 0 15px var(--genio-pink);"></div>
+            <p style="letter-spacing: 5px; opacity: 0.7; font-family: var(--font-h);">MONITOREO · SEGURIDAD · GESTIÓN CONTENIDOS · LANDING PAGES</p>
+        </div>
+    </div>
+
+    <!-- Slide 2: Delimitación del Alcance -->
+    <div class="slide-container" id="slide2">
+        <h2 class="slide-title">Delimitación del Alcance</h2>
+        <div class="content-area">
+            <div class="two-column">
+                <div class="tile">
+                    <h3>Servicios Incluidos</h3>
+                    <div class="bullet-list" style="margin-top: 22px;">
+                        <ul>
+                            <li>Monitoreo de seguridad 24/7.</li>
+                            <li>Actualizaciones de Core y Seguridad.</li>
+                            <li>Backups diarios geodistribuidos.</li>
+                            <li>Gestión de contenidos mensuales.</li>
+                            <li>Creación de Landing Pages.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tile" style="border-color: rgba(255,255,255,0.1);">
+                    <h3 style="color:var(--text-dim)">Fuera de Alcance</h3>
+                    <div class="bullet-list" style="opacity:0.65; margin-top: 22px;">
+                        <ul>
+                            <li>Desarrollo de nuevas plataformas.</li>
+                            <li>Costos de licencias de terceros.</li>
+                            <li>Producción de video / fotografía.</li>
+                            <li>Inversión en pauta publicitaria.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: Opción 01 — Core Support -->
+    <div class="slide-container opt-1" id="slide3" style="--option-color: var(--op1);">
+        <div class="opt-header">
+            <span class="opt-number">01</span>
+            <div class="opt-titles">
+                <span class="opt-tag">Opción 01 · Entrada</span>
+                <span class="opt-name"><span class="accent">Core</span> Support</span>
+            </div>
+        </div>
+        <div class="content-area">
+            <div class="two-column">
+                <div style="text-align: center;">
+                    <div class="big-number">10</div>
+                    <p style="font-family: var(--font-h); font-size: 28px; color: var(--op1); letter-spacing: 3px;">HORAS / MES</p>
+                    <div style="margin-top: 30px; border: 1px solid var(--op1); padding: 22px; box-shadow: 0 0 18px rgba(0,229,255,0.25);">
+                        <span style="font-family: var(--font-h); font-size: 30px; color: #fff;">01 LANDING PAGE</span>
+                    </div>
+                </div>
+                <div class="tile">
+                    <h3>Enfoque Preventivo</h3>
+                    <p style="font-size: 17px;">Ideal para mantener la estabilidad del sitio y realizar ajustes básicos de información institucional.</p>
+                    <div class="bullet-list" style="margin-top: 22px;">
+                        <ul>
+                            <li>Soporte técnico vía tickets.</li>
+                            <li>Corrección de errores (Bugs).</li>
+                            <li>Seguridad básica perimetral.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: Opción 02 — Growth Pro -->
+    <div class="slide-container opt-2" id="slide4" style="--option-color: var(--op2);">
+        <div class="opt-header">
+            <span class="opt-number">02</span>
+            <div class="opt-titles">
+                <span class="opt-tag">Opción 02 · Intermedia</span>
+                <span class="opt-name"><span class="accent">Growth</span> Pro</span>
+            </div>
+        </div>
+        <div class="content-area">
+            <div class="two-column">
+                <div class="tile">
+                    <h3>Crecimiento Activo</h3>
+                    <p style="font-size: 17px;">Diseñado para una estrategia de marketing dinámica y actualizaciones constantes de servicios.</p>
+                    <div class="bullet-list" style="margin-top: 22px;">
+                        <ul>
+                            <li>Soporte prioritario WhatsApp.</li>
+                            <li>Optimización de rendimiento mensual.</li>
+                            <li>Gestión activa de blog y sedes.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div style="text-align: center;">
+                    <div class="big-number">25</div>
+                    <p style="font-family: var(--font-h); font-size: 28px; color: var(--op2); letter-spacing: 3px;">HORAS / MES</p>
+                    <div style="margin-top: 30px; border: 1px solid var(--op2); padding: 22px; box-shadow: 0 0 18px rgba(168,85,247,0.3);">
+                        <span style="font-family: var(--font-h); font-size: 30px; color: #fff;">03 LANDING PAGES</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Opción 03 — Elite Unlimited -->
+    <div class="slide-container opt-3" id="slide5" style="--option-color: var(--op3);">
+        <div class="opt-header">
+            <span class="opt-number">03</span>
+            <div class="opt-titles">
+                <span class="opt-tag" style="color: var(--op3);">Opción 03 · Premium</span>
+                <span class="opt-name"><span class="accent">Elite</span> Unlimited</span>
+            </div>
+        </div>
+        <div class="content-area" style="text-align: center;">
+            <div class="badge">Partner Digital Exclusivo</div>
+            <div style="display: flex; gap: 60px; justify-content: center; align-items: center; margin-top: 30px;">
+                <div>
+                    <div class="big-number" style="font-size: 150px;">∞</div>
+                    <p style="font-family: var(--font-h); font-size: 28px; color: var(--op3); letter-spacing: 3px;">HORAS ILIMITADAS</p>
+                </div>
+                <div style="width: 2px; height: 220px; background: rgba(255,255,255,0.15);"></div>
+                <div>
+                    <div class="big-number" style="font-size: 150px;">10</div>
+                    <p style="font-family: var(--font-h); font-size: 28px; color: var(--op3); letter-spacing: 3px;">LANDINGS / MES</p>
+                </div>
+            </div>
+            <p style="margin-top: 45px; font-size: 22px; color: var(--text-dim);">Soporte de alta prioridad 24/7 y gestión integral de campañas complejas.</p>
+        </div>
+    </div>
+
+    <!-- Slide 6: Matriz de Gestión Mensual -->
+    <div class="slide-container" id="slide6">
+        <h2 class="slide-title">Matriz de Gestión Mensual</h2>
+        <div class="content-area">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Servicio</th>
+                        <th class="col-op1">Opción 01</th>
+                        <th class="col-op2">Opción 02</th>
+                        <th class="col-op3">Opción 03</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong style="color:#fff;">Bolsa de Horas</strong></td>
+                        <td style="color: var(--op1);">10 Horas</td>
+                        <td style="color: var(--op2);">25 Horas</td>
+                        <td style="color: var(--op3); font-weight: 700;">ILIMITADAS</td>
+                    </tr>
+                    <tr>
+                        <td><strong style="color:#fff;">Landings Mensuales</strong></td>
+                        <td style="color: var(--op1);">01 LP</td>
+                        <td style="color: var(--op2);">03 LPs</td>
+                        <td style="color: var(--op3); font-weight: 700;">10 LPs</td>
+                    </tr>
+                    <tr>
+                        <td><strong style="color:#fff;">Seguridad</strong></td>
+                        <td style="color: var(--op1);">Estándar</td>
+                        <td style="color: var(--op2);">Proactiva</td>
+                        <td style="color: var(--op3); font-weight: 700;">Blindaje Elite</td>
+                    </tr>
+                    <tr>
+                        <td><strong style="color:#fff;">SLA Respuesta</strong></td>
+                        <td style="color: var(--op1);">48 Horas</td>
+                        <td style="color: var(--op2);">12 Horas</td>
+                        <td style="color: var(--op3); font-weight: 700;">2 Horas</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Slide 7: Blindaje & Continuidad -->
+    <div class="slide-container" id="slide7">
+        <h2 class="slide-title">Blindaje &amp; Continuidad</h2>
+        <div class="content-area">
+            <div class="two-column">
+                <div class="tile">
+                    <i class="fa-solid fa-user-shield" style="font-size: 48px; color: var(--genio-pink); margin-bottom: 20px; display: block;"></i>
+                    <h3>Ciberseguridad</h3>
+                    <p style="font-size: 18px;">Monitoreo proactivo de integridad de archivos y gestión de cortafuegos (WAF) para prevenir ataques DDoS en Medplus.</p>
+                </div>
+                <div class="tile" style="border-color: rgba(0, 229, 255, 0.35);">
+                    <span style="position: absolute; top: 0; left: 0; width: 5px; height: 100%; background: var(--neon-cyan);"></span>
+                    <i class="fa-solid fa-cloud-arrow-up" style="font-size: 48px; color: var(--neon-cyan); margin-bottom: 20px; display: block;"></i>
+                    <h3 style="color: var(--neon-cyan);">Uptime Garantizado</h3>
+                    <p style="font-size: 18px;">Gestión de infraestructura en AWS con redundancia para asegurar que el portal responda bajo cualquier carga de tráfico.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 8: Fábrica de Landing Pages -->
+    <div class="slide-container" id="slide8">
+        <h2 class="slide-title">Fábrica de Landing Pages</h2>
+        <div class="content-area">
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px;">
+                <div class="tile" style="text-align: center; padding: 30px;">
+                    <h3 style="color: var(--genio-pink); font-size: 38px; margin-bottom: 14px;">01</h3>
+                    <p style="font-size: 17px; color: #fff;">Briefing &amp; Objetivo</p>
+                </div>
+                <div class="tile" style="text-align: center; padding: 30px;">
+                    <h3 style="color: var(--genio-pink); font-size: 38px; margin-bottom: 14px;">02</h3>
+                    <p style="font-size: 17px; color: #fff;">Diseño UI/UX</p>
+                </div>
+                <div class="tile" style="text-align: center; padding: 30px;">
+                    <h3 style="color: var(--genio-pink); font-size: 38px; margin-bottom: 14px;">03</h3>
+                    <p style="font-size: 17px; color: #fff;">Maquetación</p>
+                </div>
+                <div class="tile" style="text-align: center; padding: 30px;">
+                    <h3 style="color: var(--genio-pink); font-size: 38px; margin-bottom: 14px;">04</h3>
+                    <p style="font-size: 17px; color: #fff;">Tracking &amp; Live</p>
+                </div>
+            </div>
+            <p style="margin-top: 50px; text-align: center; font-size: 19px;">Todas las landings incluyen integración nativa con la <strong style="color: var(--neon-cyan);">Suite de Inteligencia (GA4 / GTM)</strong> para medir conversión en tiempo real.</p>
+        </div>
+    </div>
+
+    <!-- Slide 9: Gestión de Contenidos -->
+    <div class="slide-container" id="slide9">
+        <h2 class="slide-title">Gestión de Contenidos</h2>
+        <div class="content-area">
+            <div class="two-column">
+                <div class="tile">
+                    <h3>Dinamismo Institucional</h3>
+                    <p style="font-size: 19px; margin-top: 14px;">Actualización de red médica, carga de convenios con EPS/Prepagada, noticias de salud y ajustes legales en planes realizados con precisión quirúrgica.</p>
+                </div>
+                <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+                    <div style="position:relative; width: 340px; height: 340px;">
+                        <div style="position:absolute; inset:0; border:2px solid var(--neon-cyan); border-radius:50%; box-shadow: 0 0 40px var(--neon-cyan); opacity: 0.8;"></div>
+                        <div style="position:absolute; inset:30px; border:1px solid var(--genio-pink); border-radius:50%; opacity: 0.55;"></div>
+                        <div style="position:absolute; inset:60px; border:1px dashed rgba(0,229,255,0.35); border-radius:50%;"></div>
+                        <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+                            <i class="fa-solid fa-rotate" style="font-size: 80px; color: var(--neon-cyan); filter: drop-shadow(0 0 18px var(--neon-cyan));"></i>
+                            <div style="font-family: var(--font-h); font-size: 14px; letter-spacing: 4px; color: #fff; margin-top: 18px;">CONTENIDOS LIVE</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10: Términos & SLA -->
+    <div class="slide-container" id="slide10">
+        <h2 class="slide-title">Términos &amp; SLA</h2>
+        <div class="content-area">
+            <div class="tile">
+                <div class="bullet-list" style="font-size: 19px;">
+                    <ul>
+                        <li><strong style="color: #fff;">Uso de Horas:</strong> las horas de los planes 01 y 02 no son acumulables mes a mes.</li>
+                        <li><strong style="color: #fff;">Unlimited (Plan 03):</strong> soporte ilimitado aplica para mantenimiento y ajustes sobre la estructura existente.</li>
+                        <li><strong style="color: #fff;">Respuesta:</strong> tiempos de respuesta garantizados según el plan seleccionado (2h a 48h).</li>
+                        <li><strong style="color: #fff;">Permanencia:</strong> contrato inicial por 6 meses para garantizar estabilidad operativa.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 11: Inversión Mensual (FEE) -->
+    <div class="slide-container" id="slide11">
+        <h2 class="slide-title">Inversión Mensual (FEE)</h2>
+        <div class="content-area">
+            <div class="three-column">
+                <div class="tile opt-1" style="text-align: center; padding: 40px 28px;">
+                    <div style="font-family: var(--font-h); font-size: 50px; color: var(--op1); line-height: 1; text-shadow: 0 0 18px var(--op1); margin-bottom: 4px;">01</div>
+                    <p style="font-family: var(--font-b); font-size: 22px; color: #fff; margin-bottom: 22px; font-weight: 400;">Basic Core</p>
+                    <div style="font-family: var(--font-h); font-size: 42px; color: var(--op1); text-shadow: 0 0 18px rgba(0,229,255,0.4); line-height: 1;">$6.250.000</div>
+                    <div style="font-family: var(--font-h); font-size: 16px; color: var(--text-dim); letter-spacing: 2px; margin-top: 8px;">COP / MES</div>
+                </div>
+                <div class="tile opt-2" style="text-align: center; padding: 40px 28px;">
+                    <div style="font-family: var(--font-h); font-size: 50px; color: var(--op2); line-height: 1; text-shadow: 0 0 18px var(--op2); margin-bottom: 4px;">02</div>
+                    <p style="font-family: var(--font-b); font-size: 22px; color: #fff; margin-bottom: 22px; font-weight: 400;">Growth Pro</p>
+                    <div style="font-family: var(--font-h); font-size: 42px; color: var(--op2); text-shadow: 0 0 18px rgba(168,85,247,0.4); line-height: 1;">$8.750.000</div>
+                    <div style="font-family: var(--font-h); font-size: 16px; color: var(--text-dim); letter-spacing: 2px; margin-top: 8px;">COP / MES</div>
+                </div>
+                <div class="tile opt-3 featured-hard" style="text-align: center; padding: 40px 28px; position: relative;">
+                    <div style="position: absolute; top: -12px; right: 18px; background: var(--op3); color: #fff; font-family: var(--font-h); font-size: 11px; letter-spacing: 2px; padding: 4px 12px;">RECOMENDADO</div>
+                    <div style="font-family: var(--font-h); font-size: 50px; color: var(--op3); line-height: 1; text-shadow: 0 0 22px var(--op3); margin-bottom: 4px;">03</div>
+                    <p style="font-family: var(--font-b); font-size: 22px; color: #fff; margin-bottom: 22px; font-weight: 400;">Elite Unlimited</p>
+                    <div style="font-family: var(--font-h); font-size: 42px; color: var(--op3); text-shadow: 0 0 22px rgba(254,20,131,0.5); line-height: 1;">$12.500.000</div>
+                    <div style="font-family: var(--font-h); font-size: 16px; color: var(--text-dim); letter-spacing: 2px; margin-top: 8px;">COP / MES</div>
+                </div>
+            </div>
+            <p style="text-align: center; margin-top: 36px; font-size: 14px; color: var(--text-dim); font-style: italic;">*Precios exclusivos para Medplus. Servicio exento de impuestos.</p>
+        </div>
+    </div>
+
+    <!-- Slide 12: Cierre -->
+    <div class="slide-container" id="slide12">
+        <div class="content-area" style="text-align: center;">
+            <div class="badge">Agencia Geniorama</div>
+            <h1 style="font-size: 90px;">SEGURIDAD <span style="color:var(--genio-pink)">&amp;</span> <br>EVOLUCIÓN</h1>
+            <p style="font-size: 26px; margin-top: 20px;">Tu departamento web.</p>
+            <div style="height: 4px; width: 300px; background: var(--neon-cyan); margin: 50px auto; box-shadow: 0 0 15px var(--neon-cyan);"></div>
+            <div style="margin-top: 40px; font-family: var(--font-h); font-size: 22px; letter-spacing: 3px;">
+                <p style="margin: 0 0 14px; color: #fff;">GENIORAMA.CO</p>
+                <p style="margin: 0; color: var(--neon-cyan); font-size: 18px; letter-spacing: 2px; font-family: var(--font-b);">angel.burgos@geniorama.co</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- GSAP + ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        if (!reduceMotion) {
+            // Cada slide entra con fade + slide-up
+            gsap.utils.toArray('.slide-container').forEach((slide) => {
+                slide.classList.add('gsap-ready');
+                gsap.from(slide, {
+                    scrollTrigger: {
+                        trigger: slide,
+                        start: 'top 75%',
+                        toggleActions: 'play none none none'
+                    },
+                    opacity: 0,
+                    y: 40,
+                    duration: 0.7,
+                    ease: 'power2.out'
+                });
+            });
+
+            // Números prominentes con scale-bounce
+            gsap.utils.toArray('.opt-number, .big-number').forEach((num) => {
+                gsap.from(num, {
+                    scrollTrigger: {
+                        trigger: num,
+                        start: 'top 80%',
+                        toggleActions: 'play none none none'
+                    },
+                    scale: 0.4,
+                    opacity: 0,
+                    duration: 0.7,
+                    ease: 'back.out(1.7)'
+                });
+            });
+
+            // Tiles con stagger
+            gsap.utils.toArray('.slide-container').forEach((slide) => {
+                const tiles = slide.querySelectorAll('.tile');
+                if (tiles.length > 1) {
+                    gsap.from(tiles, {
+                        scrollTrigger: {
+                            trigger: slide,
+                            start: 'top 70%',
+                            toggleActions: 'play none none none'
+                        },
+                        opacity: 0,
+                        y: 30,
+                        duration: 0.5,
+                        stagger: 0.08,
+                        ease: 'power2.out'
+                    });
+                }
+            });
+
+            // Filas de tablas con stagger
+            gsap.utils.toArray('table').forEach((table) => {
+                const rows = table.querySelectorAll('tbody tr');
+                gsap.from(rows, {
+                    scrollTrigger: {
+                        trigger: table,
+                        start: 'top 70%',
+                        toggleActions: 'play none none none'
+                    },
+                    opacity: 0,
+                    x: -20,
+                    duration: 0.4,
+                    stagger: 0.05,
+                    ease: 'power1.out'
+                });
+            });
+
+            // Slide titles slide-in desde la izquierda
+            gsap.utils.toArray('.slide-title').forEach((title) => {
+                gsap.from(title, {
+                    scrollTrigger: {
+                        trigger: title,
+                        start: 'top 80%',
+                        toggleActions: 'play none none none'
+                    },
+                    x: -30,
+                    opacity: 0,
+                    duration: 0.6,
+                    ease: 'power2.out'
+                });
+            });
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propuestas MedPlus × Geniorama</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="gate.css">
+    <script src="gate.js" defer></script>
+    <style>
+        :root {
+            --genio-blue: #000A3D;
+            --genio-pink: #FE1483;
+            --bg-dark: #00041a;
+            --bg-card: rgba(0, 10, 61, 0.7);
+            --neon-cyan: #00e5ff;
+            --text-main: #ffffff;
+            --text-dim: #cbd5e1;
+            --font-h: 'Oswald', sans-serif;
+            --font-b: 'Outfit', sans-serif;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background-color: var(--bg-dark);
+            font-family: var(--font-b);
+            color: var(--text-main);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background:
+                linear-gradient(90deg, rgba(254, 20, 131, 0.05) 1px, transparent 1px),
+                linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -200px;
+            right: -200px;
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, rgba(254, 20, 131, 0.18) 0%, transparent 70%);
+            z-index: 0;
+            filter: blur(60px);
+            pointer-events: none;
+        }
+
+        .glow-cyan {
+            position: fixed;
+            top: -200px;
+            left: -200px;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 229, 255, 0.12) 0%, transparent 70%);
+            z-index: 0;
+            filter: blur(60px);
+            pointer-events: none;
+        }
+
+        .hub {
+            position: relative;
+            z-index: 2;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 80px 60px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 80px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .brand {
+            font-family: var(--font-h);
+            font-size: 22px;
+            letter-spacing: 4px;
+            color: var(--neon-cyan);
+            font-weight: 700;
+        }
+
+        .brand span { color: var(--genio-pink); }
+
+        .meta {
+            font-family: var(--font-h);
+            letter-spacing: 3px;
+            font-size: 13px;
+            color: var(--text-dim);
+            text-align: right;
+        }
+
+        .badge {
+            background: var(--genio-pink);
+            color: white;
+            padding: 6px 22px;
+            font-family: var(--font-h);
+            font-size: 16px;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 28px;
+            letter-spacing: 2px;
+        }
+
+        h1 {
+            font-family: var(--font-h);
+            font-size: 88px;
+            color: #fff;
+            line-height: 0.95;
+            margin: 0 0 28px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 30px rgba(254, 20, 131, 0.5);
+        }
+
+        h1 .pink { color: var(--genio-pink); }
+
+        .intro {
+            font-size: 22px;
+            color: var(--text-dim);
+            max-width: 760px;
+            line-height: 1.6;
+            margin-bottom: 70px;
+        }
+
+        .intro strong { color: var(--neon-cyan); font-weight: 600; }
+
+        .cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid rgba(254, 20, 131, 0.25);
+            padding: 50px 45px;
+            position: relative;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: all 0.35s ease;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            min-height: 460px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 6px;
+            height: 100%;
+            background: var(--genio-pink);
+            transition: width 0.3s ease;
+        }
+
+        .card.cyan { border-color: rgba(0, 229, 255, 0.3); }
+        .card.cyan::before { background: var(--neon-cyan); }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: var(--genio-pink);
+            box-shadow: 0 20px 50px rgba(254, 20, 131, 0.25);
+        }
+
+        .card.cyan:hover {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 20px 50px rgba(0, 229, 255, 0.25);
+        }
+
+        .card:hover::before { width: 10px; }
+
+        .card-icon {
+            font-size: 50px;
+            color: var(--genio-pink);
+            margin-bottom: 28px;
+        }
+
+        .card.cyan .card-icon { color: var(--neon-cyan); }
+
+        .card-tag {
+            font-family: var(--font-h);
+            font-size: 13px;
+            letter-spacing: 3px;
+            color: var(--neon-cyan);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+        }
+
+        .card.cyan .card-tag { color: var(--genio-pink); }
+
+        .card-title {
+            font-family: var(--font-h);
+            font-size: 42px;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            line-height: 1;
+            margin-bottom: 22px;
+        }
+
+        .card-desc {
+            font-size: 16px;
+            color: var(--text-dim);
+            line-height: 1.6;
+            margin-bottom: 28px;
+            flex-grow: 1;
+        }
+
+        .card-meta {
+            display: flex;
+            gap: 28px;
+            margin-bottom: 28px;
+            padding-top: 22px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            flex-wrap: wrap;
+        }
+
+        .card-meta div {
+            font-family: var(--font-h);
+            font-size: 13px;
+            letter-spacing: 2px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+        }
+
+        .card-meta div strong {
+            display: block;
+            color: #fff;
+            font-size: 22px;
+            margin-top: 4px;
+            letter-spacing: 1px;
+        }
+
+        .card-cta {
+            font-family: var(--font-h);
+            font-size: 16px;
+            letter-spacing: 3px;
+            color: var(--genio-pink);
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card.cyan .card-cta { color: var(--neon-cyan); }
+
+        .card-cta i { transition: transform 0.3s ease; }
+        .card:hover .card-cta i { transform: translateX(8px); }
+
+        .footer {
+            margin-top: 80px;
+            text-align: center;
+            font-family: var(--font-h);
+            letter-spacing: 3px;
+            font-size: 13px;
+            color: var(--text-dim);
+            opacity: 0.6;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer .pink { color: var(--genio-pink); }
+
+        @media (max-width: 900px) {
+            .hub { padding: 50px 30px; }
+            h1 { font-size: 54px; }
+            .intro { font-size: 18px; }
+            .cards { grid-template-columns: 1fr; gap: 28px; }
+            .card { padding: 36px 28px; min-height: auto; }
+            .card-title { font-size: 32px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glow-cyan"></div>
+
+    <div class="hub">
+
+        <div class="header">
+            <div class="brand">GENIORAMA <span>×</span> MEDPLUS</div>
+            <div class="meta">PROPUESTAS COMERCIALES · 2026</div>
+        </div>
+
+        <div class="badge">Centro de Propuestas</div>
+
+        <h1>DOS RUTAS.<br>UN <span class="pink">ECOSISTEMA</span><br>DIGITAL.</h1>
+
+        <p class="intro">
+            MedPlus está frente a dos decisiones complementarias: <strong>rediseñar la plataforma</strong> para liderar la salud premium digital,
+            y <strong>blindar la operación actual</strong> con soporte, seguridad y evolución continua. Cada propuesta funciona por sí sola y se potencia con la otra.
+        </p>
+
+        <div class="cards">
+
+            <a href="medplus-rediseno.html" class="card">
+                <div class="card-icon"><i class="fa-solid fa-pen-ruler"></i></div>
+                <div class="card-tag">Propuesta 01</div>
+                <div class="card-title">Rediseño<br>&amp; Ingeniería</div>
+                <p class="card-desc">
+                    Migración hacia un entorno web escalable, seguro y optimizado para la captación masiva de afiliados. Tres arquitecturas a escoger: WordPress Custom, Headless Next.js + Strapi o Enterprise Custom Suite.
+                </p>
+                <div class="card-meta">
+                    <div>ARQUITECTURAS<strong>03 opciones</strong></div>
+                    <div>TIME-TO-MARKET<strong>4 – 16 semanas</strong></div>
+                    <div>GARANTÍA<strong>60 días post entrega</strong></div>
+                </div>
+                <div class="card-cta">VER PROPUESTA <i class="fa-solid fa-arrow-right"></i></div>
+            </a>
+
+            <a href="medplus-soporte.html" class="card cyan">
+                <div class="card-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <div class="card-tag">Propuesta 02</div>
+                <div class="card-title">Soporte<br>Continuo</div>
+                <p class="card-desc">
+                    Monitoreo 24/7, gestión de contenidos, creación de Landing Pages, blindaje de ciberseguridad y uptime garantizado en AWS. Tu departamento web en garantía de evolución continua.
+                </p>
+                <div class="card-meta">
+                    <div>MODALIDAD<strong>Mensualidad COP</strong></div>
+                    <div>OPCIONES<strong>10h / 25h / ∞</strong></div>
+                    <div>SLA<strong>48h / 12h / 2h</strong></div>
+                </div>
+                <div class="card-cta">VER PROPUESTA <i class="fa-solid fa-arrow-right"></i></div>
+            </a>
+
+        </div>
+
+        <div class="footer">
+            GENIORAMA.CO · <span class="pink">PROYECTOS@GENIORAMA.CO</span>
+        </div>
+
+    </div>
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script>
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        function runHubAnimations() {
+            if (reduceMotion) return;
+            const tl = gsap.timeline({ defaults: { ease: 'power2.out' } });
+            tl.from('.header', { opacity: 0, y: -20, duration: 0.6 })
+              .from('.badge', { opacity: 0, scale: 0.8, duration: 0.4 }, '-=0.2')
+              .from('h1', { opacity: 0, y: 30, duration: 0.7 }, '-=0.2')
+              .from('.intro', { opacity: 0, y: 20, duration: 0.5 }, '-=0.4')
+              .from('.card', { opacity: 0, y: 40, duration: 0.6, stagger: 0.15 }, '-=0.2')
+              .from('.footer', { opacity: 0, duration: 0.4 }, '-=0.2');
+        }
+
+        // Si el gate está activo, esperar su desbloqueo. Si ya está desbloqueado, animar ya.
+        const STORAGE_KEY = 'medplus_unlocked_2026';
+        if (sessionStorage.getItem(STORAGE_KEY) === 'true') {
+            runHubAnimations();
+        } else {
+            document.addEventListener('medplus:unlocked', runHubAnimations, { once: true });
+        }
+    </script>
+
+</body>
+</html>
