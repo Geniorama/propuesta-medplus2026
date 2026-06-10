@@ -2,7 +2,7 @@
    NOTA: protección client-side, no es seguridad real.
    Cualquiera con DevTools puede saltársela. Sirve solo para evitar acceso casual. */
 (function () {
-    const EXPECTED_HASH = '2b1feeec7c8a6c399485556a2850d3039a36bd8504981a9142436f1f0e7784c5';
+    const EXPECTED_HASH = 'caa8944f138df5049438f99a9a8c80c2c805423f5ad27cd6de367f13ebacf84b';
     const STORAGE_KEY = 'medplus_unlocked_2026';
 
     // Si ya está desbloqueado en la sesión, no hacemos nada
